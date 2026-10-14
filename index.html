@@ -133,8 +133,7 @@
       Fonte: conector <strong>Meta Ads (MCP)</strong> &mdash; conta Grupo RBS (Comunica&ccedil;&atilde;o) (604645906372904), dados ao vivo da API.
       Recorte do perfil <strong>Grupo RBS Neg&oacute;cios</strong> (Instagram/Facebook): 3 campanhas
       (<code>01 | [IG] [Reconhecimento] Grupo_RBS_Neg&oacute;cios</code>, <code>02 | [FB] [Reconhecimento] Grupo_RBS_Neg&oacute;cios</code> e <code>03 | [Tr&aacute;fego] Perfil GrupoRBS_Neg&oacute;cios</code>).
-      A 01 come&ccedil;ou em <strong>15/09/2026</strong>, a 03 em <strong>16/09/2026</strong> e a 02 em <strong>05/10/2026</strong> (primeira entrega em 06/10). A campanha <code>editais | 2026</code> (R$ 63,52) &eacute; de outro projeto e <strong>n&atilde;o entra</strong>.
-      A soma dos 3 tipos = <strong>R$ 1.609,31</strong> (bate com o total do recorte).
+      A 01 come&ccedil;ou em <strong>15/09/2026</strong>, a 03 em <strong>16/09/2026</strong> e a 02 em <strong>05/10/2026</strong> (primeira entrega em 06/10).
       Objetivos do perfil: Instagram = seguidores e visualiza&ccedil;&otilde;es &middot; Facebook = visualiza&ccedil;&otilde;es e engajamento. A conta n&atilde;o &eacute; de e-commerce.
       <strong>Alcance e Frequ&ecirc;ncia</strong> do total e dos meses (*) s&atilde;o somas das campanhas &mdash; <strong>a confirmar com o cliente o valor real do Gerenciador</strong> (n&atilde;o som&aacute;veis).
     </div>
@@ -144,8 +143,7 @@
   <div class="kpi-grid" id="kpiGrid"></div>
   <div class="foot-note" style="margin:-8px 0 24px;">
     (*) <strong>Alcance e Frequ&ecirc;ncia</strong>: soma do alcance das 3 campanhas (aproxima&ccedil;&atilde;o &mdash; a mesma pessoa pode estar em mais de uma campanha, ent&atilde;o o valor real do Gerenciador &eacute; menor). A API n&atilde;o deduplica um subconjunto de campanhas. Frequ&ecirc;ncia = impress&otilde;es &divide; alcance. Pendente: valor real do per&iacute;odo e de Set/Out.
-    "Visualiza&ccedil;&otilde;es" = <code>media_views</code> (vezes que o an&uacute;ncio foi reproduzido ou exibido). "Seguidores IG" = follows no perfil do Instagram atribu&iacute;dos aos an&uacute;ncios. "Engajamento" = <code>post_engagement</code> (todas as a&ccedil;&otilde;es nos an&uacute;ncios).
-    "Custo por seguidor" = investimento total &divide; seguidores IG (inclui a campanha de Facebook, que n&atilde;o visa seguidor).
+    "Visualiza&ccedil;&otilde;es" = <code>media_views</code> (vezes que o an&uacute;ncio foi reproduzido ou exibido). "Engajamento" = <code>post_engagement</code> (todas as a&ccedil;&otilde;es nos an&uacute;ncios).
   </div>
 
   <div class="panel">
@@ -188,7 +186,7 @@
         <div style="overflow-x:auto;">
         <table id="typeTable" style="font-size:11px;table-layout:fixed;width:100%;">
           <colgroup><col style="width:30%"><col style="width:18%"><col style="width:20%"><col style="width:14%"><col style="width:18%"></colgroup>
-          <thead><tr><th>Tipo</th><th>Gasto</th><th>Visualiz.</th><th>Seg. IG</th><th>R$/mil</th></tr></thead>
+          <thead><tr><th>Tipo</th><th>Gasto</th><th>Visualiz.</th><th>Engaj.</th><th>R$/mil</th></tr></thead>
           <tbody></tbody>
           <tfoot id="typeTableFoot"></tfoot>
         </table>
@@ -285,10 +283,6 @@
         <td class="nval"><code>[IG] [Reconhecimento]</code> e <code>[FB] [Reconhecimento]</code> &rarr; Reconhecimento (Topo, objetivo OUTCOME_AWARENESS, otimizada por alcance) &middot; <code>[Tr&aacute;fego] Perfil</code> &rarr; Tr&aacute;fego (Meio, objetivo OUTCOME_TRAFFIC, resultado = visualiza&ccedil;&atilde;o de p&aacute;gina de destino). A soma dos 3 tipos = investimento total do recorte (R$ 1.609,31). Impress&otilde;es, cliques, v&iacute;deo e visualiza&ccedil;&otilde;es batem entre a soma por tipo/m&ecirc;s/dia e o total.</td>
       </tr>
       <tr>
-        <td class="nkey">Seguidores IG</td>
-        <td class="nval"><strong>18</strong> no per&iacute;odo (14 na campanha 01, 4 na 03, 0 na 02). &Eacute; o n&uacute;mero atribu&iacute;do aos an&uacute;ncios pela API; seguidores org&acirc;nicos n&atilde;o entram.</td>
-      </tr>
-      <tr>
         <td class="nkey">CTR (cliques no link)</td>
         <td class="nval">Cliques no link &divide; impress&otilde;es. Total <strong>0,35%</strong> (Reconhecimento IG 0,17% &middot; Reconhecimento FB 0,01% &middot; Tr&aacute;fego 2,56%). O CTR "todos os cliques" do Gerenciador &eacute; maior (Tr&aacute;fego 2,66%).</td>
       </tr>
@@ -369,12 +363,12 @@ const M = monthRows.map((rows,i)=>{
   const a=agg(rows); const mk=mkeys[i];
   const reach = REACH_MONTH[mk].r+REACH_MONTH[mk].t+REACH_MONTH[mk].f;
   const v = ['r','f','t'].reduce((s,k)=>{const x=CAMP[k].vid[mk];return {plays:s.plays+x.plays,thru:s.thru+x.thru,p75:s.p75+x.p75,p100:s.p100+x.p100};},{plays:0,thru:0,p75:0,p100:0});
-  return Object.assign({}, a, {reach:reach, freq:a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, costFollow:a.follow>0?a.spend/a.follow:NaN, thru:v.thru, plays:v.plays, p75:v.p75});
+  return Object.assign({}, a, {reach:reach, freq:a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:v.thru, plays:v.plays, p75:v.p75});
 });
 const t = (()=>{
   const a=agg(RAW); const reach=types.reduce((s,x)=>s+x.reach,0);
   const thru=types.reduce((s,x)=>s+x.thruplay,0);
-  return Object.assign({}, a, {reach:reach, freq:a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, costFollow:a.spend/a.follow, thru:thru});
+  return Object.assign({}, a, {reach:reach, freq:a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:thru, plays:types.reduce((s,x)=>s+x.videoPlays,0), p75:types.reduce((s,x)=>s+x.p75,0)});
 })();
 
 // dias (preenche datas sem entrega com 0)
@@ -400,13 +394,13 @@ const kpis = [
   {label:'Alcance (*)', value:fmtNum(t.reach), cls:'accent', sub:'soma das campanhas · não dedup.', series:M.map(m=>m.reach), color:'#ff7a3d', fmt:fmtNum},
   {label:'Frequência (*)', value:t.freq.toFixed(2).replace('.',','), cls:'green', sub:'impressões ÷ alcance', series:M.map(m=>m.freq), color:'#3ddc97', fmt:v=>v.toFixed(2).replace('.',',')},
   {label:'Visualizações', value:fmtNum(t.views), cls:'accent', sub:'objetivo IG e FB', series:M.map(m=>m.views), color:'#ff7a3d', fmt:fmtNum},
-  {label:'Seguidores IG', value:fmtNum(t.follow), cls:'green', sub:'follows atribuídos aos anúncios', series:M.map(m=>m.follow), color:'#3ddc97', fmt:fmtNum},
+  {label:'Video Plays', value:fmtNum(t.plays), cls:'green', sub:'reproduções de vídeo', series:M.map(m=>m.plays), color:'#3ddc97', fmt:fmtNum},
   {label:'Engajamento', value:fmtNum(t.eng), cls:'accent', sub:'objetivo FB', series:M.map(m=>m.eng), color:'#ff7a3d', fmt:fmtNum},
   {label:'Cliques no link', value:fmtNum(t.link), cls:'green', sub:pct2(t.ctr)+' CTR', series:M.map(m=>m.link), color:'#3ddc97', fmt:fmtNum},
   {label:'Visualização de página (LPV)', value:fmtNum(t.lpv), cls:'accent', sub:'campanha de Tráfego', series:M.map(m=>m.lpv), color:'#ff7a3d', fmt:fmtNum},
   {label:'CPM', value:fmtMoney2(t.cpm), cls:'green', series:M.map(m=>m.cpm), color:'#3ddc97', fmt:fmtMoney2},
   {label:'ThruPlays', value:fmtNum(t.thru), cls:'accent', sub:'vídeo ≥ 15s ou até o fim', series:M.map(m=>m.thru), color:'#ff7a3d', fmt:fmtNum},
-  {label:'Custo por seguidor', value:fmtMoney2(t.costFollow), cls:'green', sub:'invest. ÷ seguidores IG', series:M.map(m=>m.costFollow), color:'#3ddc97', fmt:fmtMoney2},
+  {label:'Vídeo até 75%', value:fmtNum(t.p75), cls:'green', series:M.map(m=>m.p75), color:'#3ddc97', fmt:fmtNum},
 ];
 
 document.getElementById('kpiGrid').innerHTML = kpis.map((k,i)=>`
@@ -440,17 +434,19 @@ const trendPointLabels = {
   id:'trendPointLabels',
   afterDatasetsDraw(chart){
     const {ctx} = chart; const meta = chart.getDatasetMeta(0);
-    ctx.save(); ctx.font="600 11px 'IBM Plex Mono',monospace"; ctx.fillStyle='#3ddc97';
+    ctx.save(); ctx.font="600 11px 'IBM Plex Mono',monospace";
     ctx.textAlign='center'; ctx.textBaseline='bottom';
-    meta.data.forEach((p,i)=>ctx.fillText(fmtNum(trendMetric[i]), p.x, p.y-8));
+    ctx.fillStyle='#3ddc97'; meta.data.forEach((p,i)=>ctx.fillText(fmtNum(trendMetric[i]), p.x, p.y-8));
+    const m1 = chart.getDatasetMeta(1);
+    ctx.fillStyle='#ff7a3d'; m1.data.forEach((p,i)=>ctx.fillText(fmtMoney2(M[i].spend), p.x, p.y-8));
     ctx.restore();
   }
 };
 const trendChart = new Chart(document.getElementById('trendChart'), {
-  type:'bar',
+  type:'line',
   data:{labels:months, datasets:[
     {type:'line', label:'Visualizações', data:trendMetric, borderColor:'#3ddc97', backgroundColor:'#3ddc97', borderWidth:2, tension:.35, yAxisID:'y1', pointRadius:3, order:0},
-    {type:'bar', label:'Investimento', data:M.map(m=>m.spend), backgroundColor:'#ff7a3d', borderRadius:4, barPercentage:0.5, categoryPercentage:0.6, yAxisID:'y', order:1}
+    {type:'line', label:'Investimento', data:M.map(m=>m.spend), borderColor:'#ff7a3d', backgroundColor:'#ff7a3d', borderWidth:2, tension:.35, yAxisID:'y', pointRadius:3, order:1}
   ]},
   plugins:[trendPointLabels],
   options:{responsive:true, interaction:{mode:'index',intersect:false}, layout:{padding:{top:20}},
@@ -531,7 +527,7 @@ document.querySelector('#typeTable tbody').innerHTML = byRes.map(b=>`<tr>
     <td class="brand">${b.short}</td>
     <td>${fmtMoney2(b.spend)}</td>
     <td>${fmtNum(b.views)}</td>
-    <td>${fmtNum(b.follow)}</td>
+    <td>${fmtNum(b.eng)}</td>
     <td>${b.views>0?`<span class="roas-tag">${fmtMoney2(b.spend/b.views*1000)}</span>`:'—'}</td>
   </tr>`).join('');
 document.getElementById('typeTableFoot').innerHTML = `
@@ -539,7 +535,7 @@ document.getElementById('typeTableFoot').innerHTML = `
     <td class="brand">Total</td>
     <td>${fmtMoney2(t.spend)}</td>
     <td>${fmtNum(t.views)}</td>
-    <td>${fmtNum(t.follow)}</td>
+    <td>${fmtNum(t.eng)}</td>
     <td>${fmtMoney2(t.spend/t.views*1000)}</td>
   </tr>`;
 
@@ -642,7 +638,7 @@ const stageCards = [
     {label:'Valor Gasto', value:fmtMoney2(r_.spend)},
     {label:'Alcance', value:fmtNum(r_.reach)},
     {label:'Visualizações', value:fmtNum(r_.views)},
-    {label:'Seguidores IG', value:fmtNum(r_.follow)},
+    {label:'Engajamento', value:fmtNum(r_.eng)},
     {label:'Impressões', value:fmtNum(r_.imp)},
     {label:'CPM', value:fmtMoney2(r_.cpm)}
   ],
@@ -658,7 +654,7 @@ const stageCards = [
     {label:'Valor Gasto', value:fmtMoney2(t_.spend)},
     {label:'Visualização de Página', value:fmtNum(t_.lpv), note:fmtMoney2(t_.spend/t_.lpv)+'/LPV'},
     {label:'Cliques no Link', value:fmtNum(t_.link), note:'CTR '+pct2(t_.link/t_.imp*100)},
-    {label:'Seguidores IG', value:fmtNum(t_.follow)},
+    {label:'Engajamento', value:fmtNum(t_.eng)},
     {label:'Impressões', value:fmtNum(t_.imp)},
     {label:'CPM', value:fmtMoney2(t_.cpm)}
   ]
@@ -670,13 +666,13 @@ stageCards.forEach((cards,i)=>{
 });
 const fq = v => v.toFixed(2).replace('.',',');
 document.getElementById('stageFoot0').innerHTML =
-  'Frequência ' + fq(r_.freq) + ' · ThruPlays ' + fmtNum(r_.thruplay) + ' · Vídeo 75% ' + fmtNum(r_.p75) + ' · Vídeo 100% ' + fmtNum(r_.p100) + ' · Cliques no link ' + fmtNum(r_.link) + ' · Engajamento ' + fmtNum(r_.eng) +
+  'Frequência ' + fq(r_.freq) + ' · ThruPlays ' + fmtNum(r_.thruplay) + ' · Vídeo 75% ' + fmtNum(r_.p75) + ' · Vídeo 100% ' + fmtNum(r_.p100) + ' · Cliques no link ' + fmtNum(r_.link) +
   '. Campanha <code>01 | [IG] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento, otimizada por alcance; ativa). Alcance = valor real da campanha. Resultado do Gerenciador: 365.598 pessoas alcançadas a R$ 2,00 cada mil.';
 document.getElementById('stageFoot1').innerHTML =
   'Frequência ' + fq(f_.freq) + ' · ThruPlays ' + fmtNum(f_.thruplay) + ' · Vídeo 75% ' + fmtNum(f_.p75) + ' · Vídeo 100% ' + fmtNum(f_.p100) + ' · Cliques no link ' + fmtNum(f_.link) +
   '. Campanha <code>02 | [FB] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento; começou em 05/10/2026, entregou de 06 a 12/10; pausada). Alcance = valor real da campanha. Objetivo do Facebook: visualizações e engajamento.';
 document.getElementById('stageFoot2').innerHTML =
-  'Frequência ' + fq(t_.freq) + ' · Alcance ' + fmtNum(t_.reach) + ' · ThruPlays ' + fmtNum(t_.thruplay) + ' · Vídeo 75% ' + fmtNum(t_.p75) + ' · Engajamento ' + fmtNum(t_.eng) +
+  'Frequência ' + fq(t_.freq) + ' · Alcance ' + fmtNum(t_.reach) + ' · ThruPlays ' + fmtNum(t_.thruplay) + ' · Vídeo 75% ' + fmtNum(t_.p75) +
   '. Campanha <code>03 | [Tráfego] Perfil GrupoRBS_Negócios</code> (objetivo Tráfego, destino perfil do Instagram, público morno + frio; começou em 16/09/2026; pausada). Resultado = visualização de página de destino. CTR = cliques no link ÷ impressões.';
 </script>
 </body>
