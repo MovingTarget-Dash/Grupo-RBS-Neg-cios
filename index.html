@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Dashboard &middot; Grupo RBS Neg&oacute;cios</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#15171c; --panel:#1c1f26; --panel-border:#2a2e38;
+    --ink:#e9ecf1; --ink-dim:#8b919d;
+    --accent:#ff7a3d; --accent-2:#3ddc97; --grid:#2a2e38;
+    --mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+    --sans:'Inter',-apple-system,Segoe UI,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);padding:32px;min-height:100vh;}
+  .wrap{max-width:1180px;margin:0 auto;}
+  header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--panel-border);padding-bottom:20px;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
+  .title-block .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;}
+  .title-block h1{font-size:26px;font-weight:600;letter-spacing:-0.01em;}
+  .period{font-family:var(--mono);font-size:12px;color:var(--ink-dim);text-align:right;}
+  .period strong{color:var(--ink);font-weight:500;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+  .kpi{background:var(--panel);border:1px solid var(--panel-border);border-radius:10px;padding:16px;padding-bottom:44px;position:relative;overflow:hidden;min-height:100px;}
+  .kpi .spark{position:absolute;left:0;right:0;bottom:0;height:42px;opacity:.9;}
+  .kpi .kpi-body{position:relative;z-index:1;}
+  .kpi .label{font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+  .kpi .value-line{display:flex;align-items:baseline;gap:7px;}
+  .kpi .value{font-family:var(--mono);font-size:19px;font-weight:600;white-space:nowrap;flex-shrink:0;}
+  .kpi .value.accent{color:var(--accent);}
+  .kpi .value.green{color:var(--accent-2);}
+  .kpi .sub{font-size:9.5px;color:var(--ink-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+  .panel{background:var(--panel);border:1px solid var(--panel-border);border-radius:10px;padding:20px;margin-bottom:20px;}
+  .panel-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;}
+  .panel-head h2{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  .section-head{background:var(--panel);border:1px solid var(--accent-2);border-radius:10px;padding:14px 20px;margin:16px 0 18px;}
+  .section-head h2{font-family:var(--mono);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--accent-2);}
+  .panel-head .note{font-size:11px;color:var(--ink-dim);font-family:var(--mono);}
+  .grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:20px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-dim);padding:8px 10px;border-bottom:1px solid var(--panel-border);font-weight:500;}
+  td{padding:9px 10px;border-bottom:1px solid #20232b;font-family:var(--mono);font-size:12.5px;}
+  td.brand{font-family:var(--sans);font-weight:500;}
+  tr:hover td{background:#21242c;}
+  .stage-panel{margin-bottom:12px;}
+  .stage-card-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .stage-card{background:var(--bg);border:1px solid var(--panel-border);border-radius:8px;padding:14px;}
+  .stage-card .label{font-size:10.5px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+  .stage-card .value{display:flex;align-items:baseline;justify-content:space-between;gap:6px;font-family:var(--mono);font-size:16px;font-weight:600;color:var(--ink);}
+  .stage-card .value .scard-num{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .stage-card .value.accent{color:var(--accent);}
+  .stage-card .scard-note{font-family:var(--mono);font-size:11px;font-weight:400;color:var(--ink-dim);white-space:nowrap;flex-shrink:0;}
+  @media(max-width:900px){.stage-card-row{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:560px){.stage-card-row{grid-template-columns:repeat(2,1fr);}}
+  #monthTypeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 14px;}
+  @media(max-width:820px){#monthTypeGrid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:460px){#monthTypeGrid{grid-template-columns:1fr;}}
+  .month-donut-col{min-width:0;display:flex;flex-direction:column;align-items:center;}
+  .month-donut-col .mlabel{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin-bottom:12px;}
+  .month-donut-col .mchart-wrap{width:100%;max-width:180px;aspect-ratio:1/1;}
+  .month-donut-col .mlegend{display:flex;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap;font-size:9px;color:var(--ink-dim);}
+  .funnel-stage{position:relative;height:92px;margin:0 auto;}
+  .funnel-stage .fbg{position:absolute;inset:0;}
+  .funnel-stage .ftext{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:14px;color:var(--ink);font-weight:700;text-align:center;}
+  .funnel-stage .flabel{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;white-space:nowrap;}
+  .funnel-stage .fvalue{font-family:var(--mono);font-size:16px;white-space:nowrap;}
+  .funnel-legend-row{display:flex;align-items:center;gap:10px;font-size:12px;padding:7px 0;}
+  .funnel-legend-row .flabel{width:150px;flex-shrink:0;color:var(--ink-dim);font-size:10px;text-transform:uppercase;letter-spacing:.04em;line-height:1.3;overflow-wrap:anywhere;}
+  .funnel-legend-row .fbar-wrap{flex:1;background:#20232b;border-radius:3px;height:8px;overflow:hidden;}
+  .funnel-legend-row .fbar{height:100%;border-radius:3px;}
+  .funnel-legend-row .fval{font-family:var(--mono);width:90px;text-align:right;}
+  #typeTable th,#typeTable td{padding:6px 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #typeTable th{font-size:9px;}
+  #typeTable td.brand{white-space:normal;line-height:1.25;}
+  #typeTableFoot td{font-weight:600;border-top:1px solid var(--panel-border);border-bottom:none;color:var(--ink);}
+  .roas-tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;background:rgba(61,220,151,0.12);color:var(--accent-2);}
+  .metric-row{background:var(--panel);border:1px solid var(--panel-border);border-radius:10px;padding:18px 20px;margin-bottom:12px;}
+  .metric-row-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+  .metric-row-head h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  .metric-row-head .total{font-family:var(--mono);font-size:13px;color:var(--ink-dim);}
+  .metric-chart-wrap{height:70px;margin-bottom:10px;}
+  .metric-legend{width:100%;border-collapse:collapse;}
+  .metric-legend td{font-family:var(--mono);font-size:11.5px;text-align:center;padding:6px 2px;border-top:1px solid #20232b;color:var(--ink);}
+  .metric-legend td.month{color:var(--ink-dim);font-size:10px;text-transform:uppercase;padding-bottom:2px;border-top:none;}
+  .foot-note{font-size:11px;color:var(--ink-dim);font-family:var(--mono);margin-top:12px;line-height:1.6;}
+  .notes-table{width:100%;border-collapse:collapse;}
+  .notes-table td{padding:12px 12px;border-bottom:1px solid #20232b;vertical-align:top;font-family:var(--sans);white-space:normal;}
+  .notes-table tr:last-child td{border-bottom:none;}
+  .notes-table td.nkey{width:190px;font-weight:600;font-size:12px;color:var(--ink);letter-spacing:.01em;}
+  .notes-table td.nval{font-size:12px;color:var(--ink-dim);line-height:1.65;}
+  .notes-table td.nval strong{color:var(--ink);font-weight:600;}
+  .notes-table code{font-family:var(--mono);font-size:11px;background:#20232b;padding:1px 4px;border-radius:3px;color:var(--ink);}
+  .notes-table tr.hl td{background:rgba(255,122,61,0.06);}
+  .notes-table tr.hl td.nkey{color:var(--accent);}
+  @media(max-width:640px){.notes-table td,.notes-table td.nkey{display:block;width:auto;}.notes-table td.nkey{border-bottom:none;padding-bottom:2px;}.notes-table td.nval{padding-top:2px;}}
+  footer{text-align:center;font-size:11px;color:var(--ink-dim);font-family:var(--mono);padding-top:10px;margin-top:8px;}
+  @media(max-width:560px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.grid-2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <div class="eyebrow">Meta Ads &middot; Relat&oacute;rio de An&uacute;ncios</div>
+      <h1>Performance de Campanhas &mdash; Grupo RBS Neg&oacute;cios</h1>
+    </div>
+    <div class="period">Per&iacute;odo analisado<br><strong>15 set &mdash; 12 out 2026</strong></div>
+  </header>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>&Iacute;ndice &middot; Estrutura do perfil</h2>
+      <span class="note">conta &middot; tipos de campanha</span>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Conta</th><th>Tipo de campanha</th><th style="text-align:center">Investimento no per&iacute;odo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="brand" rowspan="3" style="font-family:var(--mono);color:var(--accent);font-size:16px;font-weight:600;">Grupo RBS (Comunica&ccedil;&atilde;o)</td>
+          <td class="brand">1) Reconhecimento &middot; Instagram [Topo de Funil]</td>
+          <td style="text-align:center" id="idxSpend0"></td>
+        </tr>
+        <tr><td class="brand">2) Reconhecimento &middot; Facebook [Topo de Funil]</td><td style="text-align:center" id="idxSpend1"></td></tr>
+        <tr><td class="brand">3) Tr&aacute;fego &middot; Perfil Instagram [Meio de Funil]</td><td style="text-align:center" id="idxSpend2"></td></tr>
+      </tbody>
+    </table>
+    <div class="foot-note">
+      Fonte: conector <strong>Meta Ads (MCP)</strong> &mdash; conta Grupo RBS (Comunica&ccedil;&atilde;o) (604645906372904), dados ao vivo da API.
+      Recorte do perfil <strong>Grupo RBS Neg&oacute;cios</strong> (Instagram/Facebook): 3 campanhas
+      (<code>01 | [IG] [Reconhecimento] Grupo_RBS_Neg&oacute;cios</code>, <code>02 | [FB] [Reconhecimento] Grupo_RBS_Neg&oacute;cios</code> e <code>03 | [Tr&aacute;fego] Perfil GrupoRBS_Neg&oacute;cios</code>).
+      A 01 come&ccedil;ou em <strong>15/09/2026</strong>, a 03 em <strong>16/09/2026</strong> e a 02 em <strong>05/10/2026</strong> (primeira entrega em 06/10). A campanha <code>editais | 2026</code> (R$ 63,52) &eacute; de outro projeto e <strong>n&atilde;o entra</strong>.
+      A soma dos 3 tipos = <strong>R$ 1.609,31</strong> (bate com o total do recorte).
+      Objetivos do perfil: Instagram = seguidores e visualiza&ccedil;&otilde;es &middot; Facebook = visualiza&ccedil;&otilde;es e engajamento. A conta n&atilde;o &eacute; de e-commerce.
+      <strong>Alcance e Frequ&ecirc;ncia</strong> do total e dos meses (*) s&atilde;o somas das campanhas &mdash; <strong>a confirmar com o cliente o valor real do Gerenciador</strong> (n&atilde;o som&aacute;veis).
+    </div>
+  </div>
+
+  <div class="panel-head" style="margin-bottom:12px;"><h2>1 - Quadro geral de m&eacute;tricas</h2></div>
+  <div class="kpi-grid" id="kpiGrid"></div>
+  <div class="foot-note" style="margin:-8px 0 24px;">
+    (*) <strong>Alcance e Frequ&ecirc;ncia</strong>: soma do alcance das 3 campanhas (aproxima&ccedil;&atilde;o &mdash; a mesma pessoa pode estar em mais de uma campanha, ent&atilde;o o valor real do Gerenciador &eacute; menor). A API n&atilde;o deduplica um subconjunto de campanhas. Frequ&ecirc;ncia = impress&otilde;es &divide; alcance. Pendente: valor real do per&iacute;odo e de Set/Out.
+    "Visualiza&ccedil;&otilde;es" = <code>media_views</code> (vezes que o an&uacute;ncio foi reproduzido ou exibido). "Seguidores IG" = follows no perfil do Instagram atribu&iacute;dos aos an&uacute;ncios. "Engajamento" = <code>post_engagement</code> (todas as a&ccedil;&otilde;es nos an&uacute;ncios).
+    "Custo por seguidor" = investimento total &divide; seguidores IG (inclui a campanha de Facebook, que n&atilde;o visa seguidor).
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>2 - Investimento vs Visualiza&ccedil;&otilde;es - por m&ecirc;s</h2>
+      <span class="note">R$ e visualiza&ccedil;&otilde;es &middot; 2 meses</span>
+    </div>
+    <canvas id="trendChart" height="90"></canvas>
+    <div class="brand" style="font-size:12px;color:var(--ink-dim);margin-top:14px;">Investimento</div>
+    <table id="monthlySpendTable" style="margin-top:6px;">
+      <thead><tr id="monthlySpendHead"></tr></thead>
+      <tbody><tr id="monthlySpendRow"></tr></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>3 - Impress&otilde;es e Cliques no link - por dia</h2>
+      <span class="note">di&aacute;rio</span>
+    </div>
+    <canvas id="dailyChart" height="90"></canvas>
+  </div>
+
+  <div class="section-head"><h2>Tipo de campanhas</h2></div>
+
+  <div class="grid-2">
+    <div class="panel" style="margin-bottom:0;">
+      <div class="panel-head">
+        <h2>4 - Investimento por tipo de campanha</h2>
+        <span class="note">R$</span>
+      </div>
+      <canvas id="typeChart" height="220"></canvas>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;height:100%;">
+      <div class="panel" style="padding:14px 16px;margin-bottom:0;flex-shrink:0;">
+        <div class="panel-head" style="margin-bottom:10px;">
+          <h2 style="font-size:12px;">5 - Ranking por tipo &mdash; Visualiza&ccedil;&otilde;es</h2>
+          <span class="note" style="font-size:10px;">result. &middot; custo</span>
+        </div>
+        <div style="overflow-x:auto;">
+        <table id="typeTable" style="font-size:11px;table-layout:fixed;width:100%;">
+          <colgroup><col style="width:30%"><col style="width:18%"><col style="width:20%"><col style="width:14%"><col style="width:18%"></colgroup>
+          <thead><tr><th>Tipo</th><th>Gasto</th><th>Visualiz.</th><th>Seg. IG</th><th>R$/mil</th></tr></thead>
+          <tbody></tbody>
+          <tfoot id="typeTableFoot"></tfoot>
+        </table>
+        </div>
+      </div>
+      <div class="panel" style="padding:14px 16px;margin-bottom:0;flex:1;display:flex;flex-direction:column;min-height:0;">
+        <div class="panel-head" style="margin-bottom:10px;flex-shrink:0;">
+          <h2 style="font-size:12px;">6 - Cliques no link x Visualiza&ccedil;&atilde;o de p&aacute;gina</h2>
+          <span class="note" style="font-size:10px;">di&aacute;rio</span>
+        </div>
+        <div style="flex:1;min-height:200px;position:relative;"><canvas id="contentViewsChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel" style="display:flex;flex-direction:column;">
+      <div class="panel-head" style="flex-shrink:0;">
+        <h2>7 - Investimento por tipo de campanha (funil)</h2>
+        <span class="note">R$ &middot; topo &rarr; meio</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div id="funnelChart"></div>
+        <div id="funnelLegend" style="margin-top:26px;"></div>
+      </div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;">
+      <div class="panel-head" style="flex-shrink:0;">
+        <h2>8 - Valor gasto x tipo</h2>
+        <span class="note">% do investimento</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:10px 0;">
+        <div style="width:72%;max-width:348px;aspect-ratio:1/1;"><canvas id="typeDonutChart"></canvas></div>
+        <div id="typeDonutLegend" style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>9 - Tipo de Campanha por M&ecirc;s</h2>
+      <span class="note">% do investimento &middot; por m&ecirc;s</span>
+    </div>
+    <div id="monthTypeGrid" style="grid-template-columns:repeat(2,1fr);"></div>
+  </div>
+
+  <div class="panel stage-panel">
+    <div class="panel-head"><h2>10 - Reconhecimento &middot; Instagram [Topo de Funil]</h2></div>
+    <div class="stage-card-row" id="stageCards0"></div>
+    <div class="foot-note" id="stageFoot0"></div>
+  </div>
+
+  <div class="panel stage-panel">
+    <div class="panel-head"><h2>11 - Reconhecimento &middot; Facebook [Topo de Funil]</h2></div>
+    <div class="stage-card-row" id="stageCards1"></div>
+    <div class="foot-note" id="stageFoot1"></div>
+  </div>
+
+  <div class="panel stage-panel">
+    <div class="panel-head"><h2>12 - Tr&aacute;fego &middot; Perfil Instagram [Meio de Funil]</h2></div>
+    <div class="stage-card-row" id="stageCards2"></div>
+    <div class="foot-note" id="stageFoot2"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>13 - Detalhamento mensal por m&eacute;trica</h2>
+      <span class="note">12 m&eacute;tricas</span>
+    </div>
+    <div id="metricDetailContainer"></div>
+    <div class="foot-note">S&eacute;rie mensal: Set/26 = 15&ndash;30/09 (campanhas 01 e 03) &middot; Out/26 = 01&ndash;12/10 (as 3 campanhas; a 02 de Facebook entrou em 05/10). Alcance e Frequ&ecirc;ncia mensais (*) = soma das campanhas, a confirmar com o Gerenciador. Alcance n&atilde;o &eacute; som&aacute;vel.</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>14 - Notas metodol&oacute;gicas &amp; defini&ccedil;&otilde;es</h2>
+      <span class="note">como ler os n&uacute;meros</span>
+    </div>
+    <table class="notes-table">
+      <tr>
+        <td class="nkey">Fonte dos dados</td>
+        <td class="nval">Conector <strong>Meta Ads (MCP)</strong>, dados ao vivo da conta <strong>Grupo RBS (Comunica&ccedil;&atilde;o)</strong> (604645906372904). Recorte: 3 campanhas do perfil <strong>Grupo RBS Neg&oacute;cios</strong>. Per&iacute;odo <strong>15 set &ndash; 12 out 2026</strong>. Janela de atribui&ccedil;&atilde;o padr&atilde;o: <strong>7 dias clique / 1 dia visualiza&ccedil;&atilde;o</strong>.</td>
+      </tr>
+      <tr>
+        <td class="nkey">Objetivos do perfil</td>
+        <td class="nval">Instagram: <strong>seguidores e visualiza&ccedil;&otilde;es</strong>. Facebook: <strong>visualiza&ccedil;&otilde;es e engajamento</strong>. O briefing prev&ecirc; veicula&ccedil;&atilde;o de 15/09 a 14/12; este relat&oacute;rio cobre at&eacute; 12/10.</td>
+      </tr>
+      <tr>
+        <td class="nkey">Alcance e Frequ&ecirc;ncia</td>
+        <td class="nval">Nas campanhas (blocos 10, 11 e 12) o alcance &eacute; o <strong>valor real da campanha</strong>. No total e na s&eacute;rie mensal, &eacute; a <strong>soma das campanhas</strong> (542.132 no per&iacute;odo; Set 207.721 &middot; Out 388.694) &mdash; <strong>n&atilde;o &eacute; deduplicado</strong> e fica acima do real. Marcado com (*) at&eacute; o cliente enviar o valor do Gerenciador.</td>
+      </tr>
+      <tr>
+        <td class="nkey">Tipos de campanha</td>
+        <td class="nval"><code>[IG] [Reconhecimento]</code> e <code>[FB] [Reconhecimento]</code> &rarr; Reconhecimento (Topo, objetivo OUTCOME_AWARENESS, otimizada por alcance) &middot; <code>[Tr&aacute;fego] Perfil</code> &rarr; Tr&aacute;fego (Meio, objetivo OUTCOME_TRAFFIC, resultado = visualiza&ccedil;&atilde;o de p&aacute;gina de destino). A soma dos 3 tipos = investimento total do recorte (R$ 1.609,31). Impress&otilde;es, cliques, v&iacute;deo e visualiza&ccedil;&otilde;es batem entre a soma por tipo/m&ecirc;s/dia e o total.</td>
+      </tr>
+      <tr>
+        <td class="nkey">Seguidores IG</td>
+        <td class="nval"><strong>18</strong> no per&iacute;odo (14 na campanha 01, 4 na 03, 0 na 02). &Eacute; o n&uacute;mero atribu&iacute;do aos an&uacute;ncios pela API; seguidores org&acirc;nicos n&atilde;o entram.</td>
+      </tr>
+      <tr>
+        <td class="nkey">CTR (cliques no link)</td>
+        <td class="nval">Cliques no link &divide; impress&otilde;es. Total <strong>0,35%</strong> (Reconhecimento IG 0,17% &middot; Reconhecimento FB 0,01% &middot; Tr&aacute;fego 2,56%). O CTR "todos os cliques" do Gerenciador &eacute; maior (Tr&aacute;fego 2,66%).</td>
+      </tr>
+      <tr>
+        <td class="nkey">Campanha 02 [FB]</td>
+        <td class="nval">Come&ccedil;ou em 05/10/2026 e est&aacute; <strong>pausada</strong>; entregou de 06 a 12/10. Os conjuntos listados no briefing para o Facebook aparecem com o r&oacute;tulo <code>[IG]</code> &mdash; a confirmar se &eacute; apenas nomenclatura.</td>
+      </tr>
+      <tr class="hl">
+        <td class="nkey">Fora do recorte</td>
+        <td class="nval">A campanha <code>editais | 2026</code> (R$ 63,52 no per&iacute;odo) pertence &agrave; mesma conta, mas n&atilde;o ao perfil Grupo RBS Neg&oacute;cios. Tamb&eacute;m n&atilde;o entra a campanha <code>Grupo RBS Neg&oacute;cios | Lead</code> (sem gasto no per&iacute;odo).</td>
+      </tr>
+    </table>
+  </div>
+
+  <footer>Gerado ao vivo pelo conector Meta Ads (MCP) &mdash; conta Grupo RBS (Comunica&ccedil;&atilde;o) (604645906372904) &middot; Grupo RBS Neg&oacute;cios &middot; 15 set &mdash; 12 out 2026</footer>
+</div>
+
+<script>
+// linhas di&aacute;rias por campanha: [data, camp, gasto, impress&otilde;es, alcance, cliques link, visualiza&ccedil;&otilde;es, seguidores IG, engajamento, LPV]
+const RAW = [
+["2026-09-15","r",0.01,16,16,0,16,0,0,0],
+["2026-09-16","r",6.03,3983,3983,8,3542,0,20,0],["2026-09-16","t",7.5,1209,1194,24,1244,0,279,17],
+["2026-09-17","r",19.86,13508,13508,22,13344,0,212,0],["2026-09-17","t",19.91,2444,2300,53,2613,0,1089,42],
+["2026-09-18","r",18.05,10583,10552,16,10427,0,147,0],["2026-09-18","t",20.56,2544,2376,61,2705,1,1117,43],
+["2026-09-19","r",24.6,13383,13383,4,13405,0,27,0],["2026-09-19","t",23.58,2822,2578,62,3109,0,1193,47],
+["2026-09-20","r",34.62,19975,19975,5,20071,0,62,0],["2026-09-20","t",36.29,4650,4336,93,4985,1,1792,76],
+["2026-09-21","r",24.54,14776,14724,3,14864,1,52,0],["2026-09-21","t",25.81,3356,3071,62,3580,1,1359,43],
+["2026-09-22","r",22.26,13842,13842,4,13996,0,73,0],["2026-09-22","t",18.43,2489,2372,38,2652,0,969,33],
+["2026-09-23","r",27.93,16015,15843,20,16191,0,323,0],["2026-09-23","t",20.13,2660,2419,36,2770,0,984,27],
+["2026-09-24","r",26.88,16757,16757,15,16718,0,399,0],["2026-09-24","t",20.11,2620,2390,29,2698,0,997,21],
+["2026-09-25","r",30.97,19612,19382,35,19417,1,446,0],["2026-09-25","t",31.1,3533,3193,62,3665,0,1296,46],
+["2026-09-26","r",34.76,24033,23315,45,23941,1,603,0],["2026-09-26","t",23.08,2395,2279,62,2559,0,964,39],
+["2026-09-27","r",37.07,26146,26146,59,25977,2,710,0],["2026-09-27","t",31.02,3633,3367,73,3904,0,1582,56],
+["2026-09-28","r",28.62,19042,18665,34,18741,0,441,0],["2026-09-28","t",23.43,4282,3990,65,4394,0,881,44],
+["2026-09-29","r",26.26,13916,13669,28,13703,0,590,0],["2026-09-29","t",32.71,3820,3537,76,3826,0,794,67],
+["2026-09-30","r",33.56,20465,19627,56,20234,0,744,0],["2026-09-30","t",23.83,1478,1380,70,1514,0,330,58],
+["2026-10-01","r",38.93,35847,33360,113,35637,1,816,0],["2026-10-01","t",24.69,1523,1452,64,1530,0,333,60],
+["2026-10-02","r",29.14,31197,30037,83,31026,0,946,0],["2026-10-02","t",23.16,1809,1668,70,1815,0,435,60],
+["2026-10-03","r",22.99,33999,32857,106,33953,1,837,0],["2026-10-03","t",16.01,1610,1485,57,1612,0,371,49],
+["2026-10-04","r",39.17,51038,50740,117,50902,4,1053,0],["2026-10-04","t",23.48,2919,2640,81,2947,0,667,68],
+["2026-10-05","r",25.91,29854,29155,77,29739,1,666,0],["2026-10-05","t",26.78,5095,4715,140,5082,0,352,29],
+["2026-10-06","r",23.08,20224,19333,13,20117,1,520,0],["2026-10-06","t",26.65,3256,3063,96,3190,0,1185,76],["2026-10-06","f",26.11,21953,20181,0,21243,0,3677,0],
+["2026-10-07","r",22.53,17946,17261,17,17831,0,490,0],["2026-10-07","t",22.39,2046,1893,63,2037,0,594,50],["2026-10-07","f",26.12,21870,20889,0,20948,0,3333,0],
+["2026-10-08","r",24.51,19010,18392,19,18948,1,451,0],["2026-10-08","t",27.16,2583,2444,105,2572,0,805,86],["2026-10-08","f",36.02,30171,27890,0,28863,0,4819,0],
+["2026-10-09","r",23.8,17885,16892,15,17797,0,383,0],["2026-10-09","t",24.6,2262,2038,83,2267,0,644,72],["2026-10-09","f",31.43,25726,24516,4,24594,0,4059,0],
+["2026-10-10","r",25.93,18606,18193,9,18540,0,408,0],["2026-10-10","t",23.41,2090,1998,80,2083,0,575,69],["2026-10-10","f",31.44,25236,24364,6,24185,0,3763,0],
+["2026-10-11","r",31.7,24404,23379,23,24274,0,568,0],["2026-10-11","t",28.11,2853,2655,106,2842,0,789,81],["2026-10-11","f",43.08,36181,34447,1,34702,0,5005,0],
+["2026-10-12","r",25.82,22494,21220,21,22337,0,663,0],["2026-10-12","t",27.03,4106,3640,139,3997,1,1335,112],["2026-10-12","f",34.62,32638,29640,0,31519,0,4683,0]
+];
+const F = {date:0,camp:1,spend:2,imp:3,reach:4,link:5,views:6,follow:7,eng:8,lpv:9};
+
+// totais por campanha (per&iacute;odo completo, API) e v&iacute;deo mensal (API)
+const CAMP = {
+  r:{key:'r',label:'Reconhecimento · Instagram',short:'Reconhecimento IG',stage:'Topo de Funil',color:'#ff7a3d',reach:365598,freq:1.55514,thruplay:1490,p75:1813,p100:1300,videoPlays:267146,
+     vid:{set:{plays:116364,thru:732,p75:996,p100:733},out:{plays:150782,thru:758,p75:817,p100:567}}},
+  f:{key:'f',label:'Reconhecimento · Facebook',short:'Reconhecimento FB',stage:'Topo de Funil',color:'#8b5cf6',reach:133018,freq:1.456758,thruplay:4372,p75:1017,p100:819,videoPlays:180691,
+     vid:{set:{plays:0,thru:0,p75:0,p100:0},out:{plays:180691,thru:4372,p75:1017,p100:819}}},
+  t:{key:'t',label:'Tráfego · Perfil Instagram',short:'Tráfego Perfil IG',stage:'Meio de Funil',color:'#22d3ee',reach:43516,freq:1.748483,thruplay:2819,p75:3160,p100:2200,videoPlays:54945,
+     vid:{set:{plays:34725,thru:1997,p75:2793,p100:1980},out:{plays:20220,thru:822,p75:367,p100:220}}}
+};
+const REACH_MONTH = {set:{r:181418,t:26303,f:0}, out:{r:234096,t:21580,f:133018}}; // alcance real de cada campanha no mês
+
+function agg(rows){
+  const o={spend:0,imp:0,link:0,views:0,follow:0,eng:0,lpv:0};
+  rows.forEach(r=>{o.spend+=r[F.spend];o.imp+=r[F.imp];o.link+=r[F.link];o.views+=r[F.views];o.follow+=r[F.follow];o.eng+=r[F.eng];o.lpv+=r[F.lpv];});
+  o.spend=Math.round(o.spend*100)/100; return o;
+}
+const types = ['r','f','t'].map(k=>{
+  const a=agg(RAW.filter(r=>r[F.camp]===k)); const c=CAMP[k];
+  return Object.assign({}, c, a, {cpm:a.spend/a.imp*1000});
+});
+const T = k => types.find(x=>x.key===k);
+const isSet = r => r[F.date] < '2026-10-01';
+const monthRows = [RAW.filter(isSet), RAW.filter(r=>!isSet(r))];
+const months = ['Set/26','Out/26'];
+const mkeys = ['set','out'];
+const M = monthRows.map((rows,i)=>{
+  const a=agg(rows); const mk=mkeys[i];
+  const reach = REACH_MONTH[mk].r+REACH_MONTH[mk].t+REACH_MONTH[mk].f;
+  const v = ['r','f','t'].reduce((s,k)=>{const x=CAMP[k].vid[mk];return {plays:s.plays+x.plays,thru:s.thru+x.thru,p75:s.p75+x.p75,p100:s.p100+x.p100};},{plays:0,thru:0,p75:0,p100:0});
+  return Object.assign({}, a, {reach:reach, freq:a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, costFollow:a.follow>0?a.spend/a.follow:NaN, thru:v.thru, plays:v.plays, p75:v.p75});
+});
+const t = (()=>{
+  const a=agg(RAW); const reach=types.reduce((s,x)=>s+x.reach,0);
+  const thru=types.reduce((s,x)=>s+x.thruplay,0);
+  return Object.assign({}, a, {reach:reach, freq:a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, costFollow:a.spend/a.follow, thru:thru});
+})();
+
+// dias (preenche datas sem entrega com 0)
+const dayMap = {};
+RAW.forEach(r=>{const d=dayMap[r[F.date]]||(dayMap[r[F.date]]={imp:0,link:0,lpv:0});d.imp+=r[F.imp];d.link+=r[F.link];d.lpv+=r[F.lpv];});
+const daily = [];
+for(let d=new Date('2026-09-15T12:00:00Z'); d<=new Date('2026-10-12T12:00:00Z'); d.setUTCDate(d.getUTCDate()+1)){
+  const k=d.toISOString().slice(0,10); const v=dayMap[k]||{imp:0,link:0,lpv:0};
+  daily.push({Day:k, Impressions:v.imp, LinkClicks:v.link, LPV:v.lpv});
+}
+
+function fmtMoney(v){return 'R$ ' + Number(v).toLocaleString('pt-BR',{maximumFractionDigits:0});}
+function fmtMoney2(v){if(!isFinite(v))return '—';return 'R$ ' + Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtNum(v){return Number(v).toLocaleString('pt-BR',{maximumFractionDigits:0});}
+function safeDiv(a,b){return b>0?a/b:NaN;}
+const pct2 = v => v.toFixed(2).replace('.',',')+'%';
+
+['r','f','t'].forEach((k,i)=>{document.getElementById('idxSpend'+i).textContent = fmtMoney(T(k).spend);});
+
+const kpis = [
+  {label:'Investimento total', value:fmtMoney2(t.spend), cls:'accent', series:M.map(m=>m.spend), color:'#ff7a3d', fmt:fmtMoney2},
+  {label:'Impressões', value:fmtNum(t.imp), cls:'green', series:M.map(m=>m.imp), color:'#3ddc97', fmt:fmtNum},
+  {label:'Alcance (*)', value:fmtNum(t.reach), cls:'accent', sub:'soma das campanhas · não dedup.', series:M.map(m=>m.reach), color:'#ff7a3d', fmt:fmtNum},
+  {label:'Frequência (*)', value:t.freq.toFixed(2).replace('.',','), cls:'green', sub:'impressões ÷ alcance', series:M.map(m=>m.freq), color:'#3ddc97', fmt:v=>v.toFixed(2).replace('.',',')},
+  {label:'Visualizações', value:fmtNum(t.views), cls:'accent', sub:'objetivo IG e FB', series:M.map(m=>m.views), color:'#ff7a3d', fmt:fmtNum},
+  {label:'Seguidores IG', value:fmtNum(t.follow), cls:'green', sub:'follows atribuídos aos anúncios', series:M.map(m=>m.follow), color:'#3ddc97', fmt:fmtNum},
+  {label:'Engajamento', value:fmtNum(t.eng), cls:'accent', sub:'objetivo FB', series:M.map(m=>m.eng), color:'#ff7a3d', fmt:fmtNum},
+  {label:'Cliques no link', value:fmtNum(t.link), cls:'green', sub:pct2(t.ctr)+' CTR', series:M.map(m=>m.link), color:'#3ddc97', fmt:fmtNum},
+  {label:'Visualização de página (LPV)', value:fmtNum(t.lpv), cls:'accent', sub:'campanha de Tráfego', series:M.map(m=>m.lpv), color:'#ff7a3d', fmt:fmtNum},
+  {label:'CPM', value:fmtMoney2(t.cpm), cls:'green', series:M.map(m=>m.cpm), color:'#3ddc97', fmt:fmtMoney2},
+  {label:'ThruPlays', value:fmtNum(t.thru), cls:'accent', sub:'vídeo ≥ 15s ou até o fim', series:M.map(m=>m.thru), color:'#ff7a3d', fmt:fmtNum},
+  {label:'Custo por seguidor', value:fmtMoney2(t.costFollow), cls:'green', sub:'invest. ÷ seguidores IG', series:M.map(m=>m.costFollow), color:'#3ddc97', fmt:fmtMoney2},
+];
+
+document.getElementById('kpiGrid').innerHTML = kpis.map((k,i)=>`
+  <div class="kpi">
+    <div class="kpi-body">
+      <div class="label">${k.label}</div>
+      <div class="value-line">
+        <span class="value ${k.cls}">${k.value}</span>
+        ${k.sub?`<span class="sub">${k.sub}</span>`:''}
+      </div>
+    </div>
+    <canvas class="spark" id="spark${i}"></canvas>
+  </div>`).join('');
+
+function sparkline(elId, series, color, h){
+  new Chart(document.getElementById(elId), {
+    type:'line',
+    data:{labels:series.map((_,i)=>i), datasets:[{
+      data:series, borderColor:color, borderWidth:1, pointRadius:0, tension:.55,
+      cubicInterpolationMode:'monotone', fill:true,
+      backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,h||48);g.addColorStop(0,color+'70');g.addColorStop(.6,color+'20');g.addColorStop(1,color+'00');return g;}
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},elements:{line:{borderJoinStyle:'round',borderCapStyle:'round'}}}
+  });
+}
+kpis.forEach((k,i)=>sparkline('spark'+i, k.series, k.color));
+
+// ---- 2 - trend ----
+const trendMetric = M.map(m=>m.views);
+const trendPointLabels = {
+  id:'trendPointLabels',
+  afterDatasetsDraw(chart){
+    const {ctx} = chart; const meta = chart.getDatasetMeta(0);
+    ctx.save(); ctx.font="600 11px 'IBM Plex Mono',monospace"; ctx.fillStyle='#3ddc97';
+    ctx.textAlign='center'; ctx.textBaseline='bottom';
+    meta.data.forEach((p,i)=>ctx.fillText(fmtNum(trendMetric[i]), p.x, p.y-8));
+    ctx.restore();
+  }
+};
+const trendChart = new Chart(document.getElementById('trendChart'), {
+  type:'bar',
+  data:{labels:months, datasets:[
+    {type:'line', label:'Visualizações', data:trendMetric, borderColor:'#3ddc97', backgroundColor:'#3ddc97', borderWidth:2, tension:.35, yAxisID:'y1', pointRadius:3, order:0},
+    {type:'bar', label:'Investimento', data:M.map(m=>m.spend), backgroundColor:'#ff7a3d', borderRadius:4, barPercentage:0.5, categoryPercentage:0.6, yAxisID:'y', order:1}
+  ]},
+  plugins:[trendPointLabels],
+  options:{responsive:true, interaction:{mode:'index',intersect:false}, layout:{padding:{top:20}},
+    plugins:{legend:{labels:{color:'#8b919d',font:{family:'monospace',size:11}}}},
+    scales:{
+      x:{ticks:{color:'#8b919d'}, grid:{color:'#2a2e38'}},
+      y:{position:'left', ticks:{color:'#8b919d', callback:v=>'R$'+v}, grid:{color:'#2a2e38'}, title:{display:true,text:'Investimento',color:'#8b919d',font:{size:10}}},
+      y1:{position:'right', ticks:{color:'#8b919d'}, grid:{display:false}, title:{display:true,text:'Visualizações',color:'#8b919d',font:{size:10}}}
+    }}
+});
+
+// ---- 3 - daily ----
+const dailyLabels = daily.map(d=>{const p=d.Day.split('-');return p[2]+'/'+p[1];});
+new Chart(document.getElementById('dailyChart'), {
+  type:'line',
+  data:{labels:dailyLabels, datasets:[
+    {label:'Impressões', data:daily.map(d=>d.Impressions), borderColor:'#3ddc97', backgroundColor:'#3ddc97', borderWidth:2, pointRadius:0, tension:.3, yAxisID:'y'},
+    {label:'Cliques no link', data:daily.map(d=>d.LinkClicks), borderColor:'#38bdf8', backgroundColor:'#38bdf8', borderWidth:2, pointRadius:0, tension:.3, yAxisID:'y1'}
+  ]},
+  options:{responsive:true, interaction:{mode:'index',intersect:false},
+    plugins:{legend:{labels:{color:'#8b919d',font:{family:'monospace',size:11}}}},
+    scales:{
+      x:{ticks:{color:'#8b919d',autoSkip:true,maxRotation:0,maxTicksLimit:16}, grid:{color:'#2a2e38'}},
+      y:{position:'left', ticks:{color:'#8b919d'}, grid:{color:'#2a2e38'}, title:{display:true,text:'Impressões',color:'#8b919d',font:{size:10}}},
+      y1:{position:'right', ticks:{color:'#8b919d'}, grid:{display:false}, title:{display:true,text:'Cliques no link',color:'#8b919d',font:{size:10}}}
+    }}
+});
+
+// ---- 13 - metric detail ----
+document.getElementById('metricDetailContainer').innerHTML = kpis.map((k,i)=>`
+  <div class="metric-row">
+    <div class="metric-row-head"><h3>${k.label}</h3><span class="total">total: ${k.value}</span></div>
+    <div class="metric-chart-wrap"><canvas id="metricChart${i}"></canvas></div>
+    <table class="metric-legend">
+      <tr>${months.map(m=>`<td class="month">${m}</td>`).join('')}</tr>
+      <tr>${k.series.map(v=>`<td>${k.fmt(v)}</td>`).join('')}</tr>
+    </table>
+  </div>`).join('');
+kpis.forEach((k,i)=>sparkline('metricChart'+i, k.series, k.color, 70));
+
+// ---- monthly spend table aligned ----
+document.getElementById('monthlySpendHead').innerHTML = months.map(m=>`<th style="text-align:center">${m}</th>`).join('');
+document.getElementById('monthlySpendRow').innerHTML = M.map(m=>`<td style="text-align:center">${fmtMoney2(m.spend)}</td>`).join('');
+function alignSpendTable(){
+  const area = trendChart.chartArea; if(!area) return;
+  const table = document.getElementById('monthlySpendTable');
+  table.style.marginLeft = area.left + 'px';
+  table.style.width = (area.right - area.left) + 'px';
+}
+alignSpendTable();
+window.addEventListener('resize', ()=>setTimeout(alignSpendTable, 60));
+
+// ---- 4 - invest by type ----
+const typesSorted = [...types].sort((a,b)=>b.spend-a.spend);
+const typeValueLabels = {
+  id:'typeValueLabels',
+  afterDatasetsDraw(chart){
+    const {ctx}=chart; const meta=chart.getDatasetMeta(0);
+    ctx.save(); ctx.font="13px 'IBM Plex Mono',monospace"; ctx.fillStyle='#3ddc97'; ctx.textBaseline='middle'; ctx.textAlign='left';
+    meta.data.forEach((bar,i)=>ctx.fillText(fmtMoney2(typesSorted[i].spend), bar.x+8, bar.y));
+    ctx.restore();
+  }
+};
+new Chart(document.getElementById('typeChart'), {
+  type:'bar',
+  data:{labels:typesSorted.map(b=>b.short), datasets:[{data:typesSorted.map(b=>b.spend), backgroundColor:typesSorted.map(b=>b.color), borderRadius:4, barPercentage:0.6, categoryPercentage:0.7}]},
+  plugins:[typeValueLabels],
+  options:{indexAxis:'y', responsive:true, plugins:{legend:{display:false}},
+    scales:{
+      x:{suggestedMax:Math.max(...typesSorted.map(b=>b.spend))*1.3, ticks:{color:'#8b919d',callback:v=>'R$'+v}, grid:{color:'#2a2e38'}},
+      y:{ticks:{color:'#e9ecf1',font:{size:10.5}}, grid:{display:false}}
+    }}
+});
+
+// ---- 5 - ranking (por visualizações) ----
+const byRes = [...types].sort((a,b)=>b.views-a.views);
+document.querySelector('#typeTable tbody').innerHTML = byRes.map(b=>`<tr>
+    <td class="brand">${b.short}</td>
+    <td>${fmtMoney2(b.spend)}</td>
+    <td>${fmtNum(b.views)}</td>
+    <td>${fmtNum(b.follow)}</td>
+    <td>${b.views>0?`<span class="roas-tag">${fmtMoney2(b.spend/b.views*1000)}</span>`:'—'}</td>
+  </tr>`).join('');
+document.getElementById('typeTableFoot').innerHTML = `
+  <tr>
+    <td class="brand">Total</td>
+    <td>${fmtMoney2(t.spend)}</td>
+    <td>${fmtNum(t.views)}</td>
+    <td>${fmtNum(t.follow)}</td>
+    <td>${fmtMoney2(t.spend/t.views*1000)}</td>
+  </tr>`;
+
+// ---- 6 - cliques x LPV (diário) ----
+new Chart(document.getElementById('contentViewsChart'), {
+  type:'line',
+  data:{labels:dailyLabels, datasets:[
+    {label:'Cliques no link', data:daily.map(d=>d.LinkClicks), borderColor:'#3ddc97', backgroundColor:'#3ddc97', borderWidth:2, pointRadius:0, tension:.3},
+    {label:'Visualização de página (LPV)', data:daily.map(d=>d.LPV), borderColor:'#38bdf8', backgroundColor:'#38bdf8', borderWidth:2, pointRadius:0, tension:.3}
+  ]},
+  options:{responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+    plugins:{legend:{labels:{color:'#8b919d',font:{family:'monospace',size:10},boxWidth:10}}},
+    scales:{x:{ticks:{color:'#8b919d',autoSkip:true,maxRotation:0,maxTicksLimit:10,font:{size:9}},grid:{color:'#2a2e38'}}, y:{ticks:{color:'#8b919d',font:{size:9}},grid:{color:'#2a2e38'}}}}
+});
+
+// ---- 7 - funnel (3 estágios) ----
+const funOrder = ['r','f','t'];
+const clips = ['polygon(3% 0,97% 0,84% 100%,16% 100%)','polygon(16% 0,84% 0,71% 100%,29% 100%)','polygon(29% 0,71% 0,58% 100%,42% 100%)'];
+const funnelTypes = funOrder.map((k,i)=>({short:T(k).short, value:T(k).spend, color:T(k).color, clip:clips[i]}));
+document.getElementById('funnelChart').innerHTML = funnelTypes.map(s=>`
+  <div class="funnel-stage" style="width:min(100%,460px);">
+    <div class="fbg" style="background:${s.color};clip-path:${s.clip};"></div>
+    <div class="ftext"><div class="flabel">${s.short}</div><div class="fvalue">${fmtMoney2(s.value)}</div></div>
+  </div>`).join('');
+const maxFunnel = Math.max(...funnelTypes.map(s=>s.value));
+document.getElementById('funnelLegend').innerHTML = funnelTypes.map(s=>`
+  <div class="funnel-legend-row">
+    <div class="flabel">${s.short}</div>
+    <div class="fbar-wrap"><div class="fbar" style="width:${(s.value/maxFunnel*100).toFixed(1)}%;background:${s.color};"></div></div>
+    <div class="fval">${fmtMoney2(s.value)}</div>
+  </div>`).join('');
+
+// ---- 8 - donut ----
+const donutTypes = funOrder.map(k=>({label:T(k).short, value:T(k).spend, color:T(k).color}));
+const donutTotal = donutTypes.reduce((a,s)=>a+s.value,0);
+const donutPctLabels = {
+  id:'donutPctLabels',
+  afterDatasetsDraw(chart){
+    const {ctx}=chart; const meta=chart.getDatasetMeta(0);
+    ctx.save(); ctx.font="12px 'IBM Plex Mono',monospace"; ctx.fillStyle='#e9ecf1'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    meta.data.forEach((arc,i)=>{
+      if(donutTypes[i].value/donutTotal < 0.03) return;
+      const pos = arc.tooltipPosition();
+      ctx.fillText((donutTypes[i].value/donutTotal*100).toFixed(1).replace('.',',')+'%', pos.x, pos.y);
+    });
+    ctx.restore();
+  }
+};
+new Chart(document.getElementById('typeDonutChart'), {
+  type:'doughnut',
+  data:{labels:donutTypes.map(s=>s.label), datasets:[{data:donutTypes.map(s=>s.value), backgroundColor:donutTypes.map(s=>s.color), borderColor:'#1c1f26', borderWidth:3}]},
+  plugins:[donutPctLabels],
+  options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'55%'}
+});
+document.getElementById('typeDonutLegend').innerHTML = donutTypes.map(s=>`
+  <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-dim);">
+    <span style="width:12px;height:12px;border-radius:3px;background:${s.color};display:inline-block;"></span>${s.label}
+  </div>`).join('');
+
+// ---- 9 - type by month ----
+const tmColors = funOrder.map(k=>T(k).color);
+const tmNames = funOrder.map(k=>T(k).short);
+const TM = {labels:months, totals:M.map(m=>m.spend), vals:monthRows.map(rows=>funOrder.map(k=>agg(rows.filter(r=>r[F.camp]===k)).spend))};
+document.getElementById('monthTypeGrid').innerHTML = TM.labels.map((mo,i)=>`
+  <div class="month-donut-col">
+    <div class="mlabel">${mo}</div>
+    <div class="mchart-wrap"><canvas id="monthDonut${i}"></canvas></div>
+    <div class="mlegend">${tmNames.map((n,j)=>`<span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:2px;background:${tmColors[j]};display:inline-block;"></span>${n}</span>`).join('')}</div>
+  </div>`).join('');
+TM.labels.forEach((mo,i)=>{
+  const vals = TM.vals[i];
+  const totMo = TM.totals[i];
+  if(totMo<=0) return;
+  const centerText = {id:'ct'+i, afterDatasetsDraw(chart){
+    const {ctx, chartArea:{width,height,top,left}} = chart;
+    ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+    const cx=left+width/2, cy=top+height/2;
+    ctx.font="700 12px 'IBM Plex Mono',monospace"; ctx.fillStyle='#e9ecf1'; ctx.fillText(fmtMoney2(totMo), cx, cy-7);
+    ctx.font="10px Inter,sans-serif"; ctx.fillStyle='#8b919d'; ctx.fillText('investido', cx, cy+11);
+    ctx.restore();
+  }};
+  const pctLabels = {id:'pl'+i, afterDatasetsDraw(chart){
+    const {ctx}=chart; const meta=chart.getDatasetMeta(0);
+    ctx.save(); ctx.font="9px 'IBM Plex Mono',monospace"; ctx.fillStyle='#e9ecf1'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    meta.data.forEach((arc,j)=>{ if(vals[j]/totMo < 0.05) return; const pos=arc.tooltipPosition(); ctx.fillText((vals[j]/totMo*100).toFixed(0)+'%', pos.x, pos.y); });
+    ctx.restore();
+  }};
+  new Chart(document.getElementById('monthDonut'+i), {
+    type:'doughnut',
+    data:{labels:tmNames, datasets:[{data:vals, backgroundColor:tmColors, borderColor:'#1c1f26', borderWidth:2}]},
+    plugins:[centerText, pctLabels],
+    options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'62%'}
+  });
+});
+
+// ---- 10/11/12 - stage cards ----
+const r_=T('r'), f_=T('f'), t_=T('t');
+const stageCards = [
+  [
+    {label:'Valor Gasto', value:fmtMoney2(r_.spend)},
+    {label:'Alcance', value:fmtNum(r_.reach)},
+    {label:'Visualizações', value:fmtNum(r_.views)},
+    {label:'Seguidores IG', value:fmtNum(r_.follow)},
+    {label:'Impressões', value:fmtNum(r_.imp)},
+    {label:'CPM', value:fmtMoney2(r_.cpm)}
+  ],
+  [
+    {label:'Valor Gasto', value:fmtMoney2(f_.spend)},
+    {label:'Alcance', value:fmtNum(f_.reach)},
+    {label:'Visualizações', value:fmtNum(f_.views)},
+    {label:'Engajamento', value:fmtNum(f_.eng)},
+    {label:'Impressões', value:fmtNum(f_.imp)},
+    {label:'CPM', value:fmtMoney2(f_.cpm)}
+  ],
+  [
+    {label:'Valor Gasto', value:fmtMoney2(t_.spend)},
+    {label:'Visualização de Página', value:fmtNum(t_.lpv), note:fmtMoney2(t_.spend/t_.lpv)+'/LPV'},
+    {label:'Cliques no Link', value:fmtNum(t_.link), note:'CTR '+pct2(t_.link/t_.imp*100)},
+    {label:'Seguidores IG', value:fmtNum(t_.follow)},
+    {label:'Impressões', value:fmtNum(t_.imp)},
+    {label:'CPM', value:fmtMoney2(t_.cpm)}
+  ]
+];
+stageCards.forEach((cards,i)=>{
+  document.getElementById('stageCards'+i).innerHTML = cards.map((c,j)=>`
+    <div class="stage-card"><div class="label">${c.label}</div><div class="value ${j<2?'accent':''}"><span class="scard-num">${c.value}</span>${c.note?`<span class="scard-note">${c.note}</span>`:''}</div></div>
+  `).join('');
+});
+const fq = v => v.toFixed(2).replace('.',',');
+document.getElementById('stageFoot0').innerHTML =
+  'Frequência ' + fq(r_.freq) + ' · ThruPlays ' + fmtNum(r_.thruplay) + ' · Vídeo 75% ' + fmtNum(r_.p75) + ' · Vídeo 100% ' + fmtNum(r_.p100) + ' · Cliques no link ' + fmtNum(r_.link) + ' · Engajamento ' + fmtNum(r_.eng) +
+  '. Campanha <code>01 | [IG] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento, otimizada por alcance; ativa). Alcance = valor real da campanha. Resultado do Gerenciador: 365.598 pessoas alcançadas a R$ 2,00 cada mil.';
+document.getElementById('stageFoot1').innerHTML =
+  'Frequência ' + fq(f_.freq) + ' · ThruPlays ' + fmtNum(f_.thruplay) + ' · Vídeo 75% ' + fmtNum(f_.p75) + ' · Vídeo 100% ' + fmtNum(f_.p100) + ' · Cliques no link ' + fmtNum(f_.link) +
+  '. Campanha <code>02 | [FB] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento; começou em 05/10/2026, entregou de 06 a 12/10; pausada). Alcance = valor real da campanha. Objetivo do Facebook: visualizações e engajamento.';
+document.getElementById('stageFoot2').innerHTML =
+  'Frequência ' + fq(t_.freq) + ' · Alcance ' + fmtNum(t_.reach) + ' · ThruPlays ' + fmtNum(t_.thruplay) + ' · Vídeo 75% ' + fmtNum(t_.p75) + ' · Engajamento ' + fmtNum(t_.eng) +
+  '. Campanha <code>03 | [Tráfego] Perfil GrupoRBS_Negócios</code> (objetivo Tráfego, destino perfil do Instagram, público morno + frio; começou em 16/09/2026; pausada). Resultado = visualização de página de destino. CTR = cliques no link ÷ impressões.';
+</script>
+</body>
+</html>
