@@ -135,28 +135,23 @@
       (<code>01 | [IG] [Reconhecimento] Grupo_RBS_Neg&oacute;cios</code>, <code>02 | [FB] [Reconhecimento] Grupo_RBS_Neg&oacute;cios</code> e <code>03 | [Tr&aacute;fego] Perfil GrupoRBS_Neg&oacute;cios</code>).
       A 01 come&ccedil;ou em <strong>15/09/2026</strong>, a 03 em <strong>16/09/2026</strong> e a 02 em <strong>05/10/2026</strong> (primeira entrega em 06/10).
       Objetivos do perfil: Instagram = seguidores e visualiza&ccedil;&otilde;es &middot; Facebook = visualiza&ccedil;&otilde;es e engajamento. A conta n&atilde;o &eacute; de e-commerce.
-      <strong>Alcance e Frequ&ecirc;ncia</strong> do total e dos meses (*) s&atilde;o somas das campanhas &mdash; <strong>a confirmar com o cliente o valor real do Gerenciador</strong> (n&atilde;o som&aacute;veis).
+      <strong>Alcance e Frequ&ecirc;ncia</strong> do per&iacute;odo = valores reais do Gerenciador &mdash; n&atilde;o som&aacute;veis.
     </div>
   </div>
 
   <div class="panel-head" style="margin-bottom:12px;"><h2>1 - Quadro geral de m&eacute;tricas</h2></div>
   <div class="kpi-grid" id="kpiGrid"></div>
   <div class="foot-note" style="margin:-8px 0 24px;">
-    (*) <strong>Alcance e Frequ&ecirc;ncia</strong>: soma do alcance das 3 campanhas (aproxima&ccedil;&atilde;o &mdash; a mesma pessoa pode estar em mais de uma campanha, ent&atilde;o o valor real do Gerenciador &eacute; menor). A API n&atilde;o deduplica um subconjunto de campanhas. Frequ&ecirc;ncia = impress&otilde;es &divide; alcance. Pendente: valor real do per&iacute;odo e de Set/Out.
+    <strong>Alcance e Frequ&ecirc;ncia</strong> do per&iacute;odo = valores reais do Gerenciador: <strong>522.390 / 1,60</strong>. Mensal (Gerenciador): Set <strong>209.474 / 1,38</strong> &middot; Out <strong>380.801 / 1,44</strong>. Alcance n&atilde;o &eacute; som&aacute;vel: a soma dos meses (590.275) fica acima do total do per&iacute;odo (522.390, deduplicado).
     "Visualiza&ccedil;&otilde;es" = <code>media_views</code> (vezes que o an&uacute;ncio foi reproduzido ou exibido). "Engajamento" = <code>post_engagement</code> (todas as a&ccedil;&otilde;es nos an&uacute;ncios).
   </div>
 
   <div class="panel">
     <div class="panel-head">
-      <h2>2 - Investimento vs Visualiza&ccedil;&otilde;es - por m&ecirc;s</h2>
-      <span class="note">R$ e visualiza&ccedil;&otilde;es &middot; 2 meses</span>
+      <h2>2 - Investimento vs Visualiza&ccedil;&otilde;es - por dia</h2>
+      <span class="note">di&aacute;rio</span>
     </div>
     <canvas id="trendChart" height="90"></canvas>
-    <div class="brand" style="font-size:12px;color:var(--ink-dim);margin-top:14px;">Investimento</div>
-    <table id="monthlySpendTable" style="margin-top:6px;">
-      <thead><tr id="monthlySpendHead"></tr></thead>
-      <tbody><tr id="monthlySpendRow"></tr></tbody>
-    </table>
   </div>
 
   <div class="panel">
@@ -257,7 +252,7 @@
       <span class="note">12 m&eacute;tricas</span>
     </div>
     <div id="metricDetailContainer"></div>
-    <div class="foot-note">S&eacute;rie mensal: Set/26 = 15&ndash;30/09 (campanhas 01 e 03) &middot; Out/26 = 01&ndash;12/10 (as 3 campanhas; a 02 de Facebook entrou em 05/10). Alcance e Frequ&ecirc;ncia mensais (*) = soma das campanhas, a confirmar com o Gerenciador. Alcance n&atilde;o &eacute; som&aacute;vel.</div>
+    <div class="foot-note">S&eacute;rie mensal: Set/26 = 15&ndash;30/09 (campanhas 01 e 03) &middot; Out/26 = 01&ndash;12/10 (as 3 campanhas; a 02 de Facebook entrou em 05/10). Alcance e Frequ&ecirc;ncia mensais = <strong>valores reais do Gerenciador</strong> (Set 209.474 / 1,38 &middot; Out 380.801 / 1,44). Alcance n&atilde;o &eacute; som&aacute;vel: a soma dos meses (590.275) fica acima do total do per&iacute;odo (522.390, deduplicado).</div>
   </div>
 
   <div class="panel">
@@ -276,7 +271,7 @@
       </tr>
       <tr>
         <td class="nkey">Alcance e Frequ&ecirc;ncia</td>
-        <td class="nval">Nas campanhas (blocos 10, 11 e 12) o alcance &eacute; o <strong>valor real da campanha</strong>. No total e na s&eacute;rie mensal, &eacute; a <strong>soma das campanhas</strong> (542.132 no per&iacute;odo; Set 207.721 &middot; Out 388.694) &mdash; <strong>n&atilde;o &eacute; deduplicado</strong> e fica acima do real. Marcado com (*) at&eacute; o cliente enviar o valor do Gerenciador.</td>
+        <td class="nval">Nas campanhas (blocos 10, 11 e 12) o alcance &eacute; o <strong>valor real da campanha</strong>. No per&iacute;odo: Alcance <strong>522.390</strong>, Frequ&ecirc;ncia <strong>1,60</strong> (valores reais do Gerenciador, todas as campanhas juntas). Mensal (Gerenciador): Set <strong>209.474</strong> / 1,38 &middot; Out <strong>380.801</strong> / 1,44. <strong>N&atilde;o s&atilde;o som&aacute;veis</strong> &mdash; a soma dos meses (590.275) fica acima do total do per&iacute;odo (522.390) porque a mesma pessoa &eacute; contada em mais de um m&ecirc;s.</td>
       </tr>
       <tr>
         <td class="nkey">Tipos de campanha</td>
@@ -288,7 +283,7 @@
       </tr>
       <tr>
         <td class="nkey">Campanha 02 [FB]</td>
-        <td class="nval">Come&ccedil;ou em 05/10/2026 e est&aacute; <strong>pausada</strong>; entregou de 06 a 12/10. Os conjuntos listados no briefing para o Facebook aparecem com o r&oacute;tulo <code>[IG]</code> &mdash; a confirmar se &eacute; apenas nomenclatura.</td>
+        <td class="nval">Come&ccedil;ou em 05/10/2026 e est&aacute; <strong>ativa</strong>; no per&iacute;odo entregou de 06 a 12/10. Os conjuntos listados no briefing para o Facebook aparecem com o r&oacute;tulo <code>[IG]</code> &mdash; a confirmar se &eacute; apenas nomenclatura.</td>
       </tr>
       <tr class="hl">
         <td class="nkey">Fora do recorte</td>
@@ -343,7 +338,7 @@ const CAMP = {
   t:{key:'t',label:'Tráfego · Perfil Instagram',short:'Tráfego Perfil IG',stage:'Meio de Funil',color:'#22d3ee',reach:43516,freq:1.748483,thruplay:2819,p75:3160,p100:2200,videoPlays:54945,
      vid:{set:{plays:34725,thru:1997,p75:2793,p100:1980},out:{plays:20220,thru:822,p75:367,p100:220}}}
 };
-const REACH_MONTH = {set:{r:181418,t:26303,f:0}, out:{r:234096,t:21580,f:133018}}; // alcance real de cada campanha no mês
+const REAL_MONTH = {set:{reach:209474,freq:1.38}, out:{reach:380801,freq:1.44}}; // valores reais do Gerenciador (todas as campanhas)
 
 function agg(rows){
   const o={spend:0,imp:0,link:0,views:0,follow:0,eng:0,lpv:0};
@@ -361,23 +356,24 @@ const months = ['Set/26','Out/26'];
 const mkeys = ['set','out'];
 const M = monthRows.map((rows,i)=>{
   const a=agg(rows); const mk=mkeys[i];
-  const reach = REACH_MONTH[mk].r+REACH_MONTH[mk].t+REACH_MONTH[mk].f;
+  const reach = REAL_MONTH[mk].reach;
   const v = ['r','f','t'].reduce((s,k)=>{const x=CAMP[k].vid[mk];return {plays:s.plays+x.plays,thru:s.thru+x.thru,p75:s.p75+x.p75,p100:s.p100+x.p100};},{plays:0,thru:0,p75:0,p100:0});
-  return Object.assign({}, a, {reach:reach, freq:a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:v.thru, plays:v.plays, p75:v.p75});
+  return Object.assign({}, a, {reach:reach, freq:REAL_MONTH[mk].freq, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:v.thru, plays:v.plays, p75:v.p75});
 });
+const REAL_REACH = 522390, REAL_FREQ = 1.60;
 const t = (()=>{
   const a=agg(RAW); const reach=types.reduce((s,x)=>s+x.reach,0);
   const thru=types.reduce((s,x)=>s+x.thruplay,0);
-  return Object.assign({}, a, {reach:reach, freq:a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:thru, plays:types.reduce((s,x)=>s+x.videoPlays,0), p75:types.reduce((s,x)=>s+x.p75,0)});
+  return Object.assign({}, a, {reach:REAL_REACH, freq:REAL_FREQ, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:thru, plays:types.reduce((s,x)=>s+x.videoPlays,0), p75:types.reduce((s,x)=>s+x.p75,0)});
 })();
 
 // dias (preenche datas sem entrega com 0)
 const dayMap = {};
-RAW.forEach(r=>{const d=dayMap[r[F.date]]||(dayMap[r[F.date]]={imp:0,link:0,lpv:0});d.imp+=r[F.imp];d.link+=r[F.link];d.lpv+=r[F.lpv];});
+RAW.forEach(r=>{const d=dayMap[r[F.date]]||(dayMap[r[F.date]]={imp:0,link:0,lpv:0,spend:0,views:0});d.imp+=r[F.imp];d.link+=r[F.link];d.lpv+=r[F.lpv];d.spend+=r[F.spend];d.views+=r[F.views];});
 const daily = [];
 for(let d=new Date('2026-09-15T12:00:00Z'); d<=new Date('2026-10-12T12:00:00Z'); d.setUTCDate(d.getUTCDate()+1)){
-  const k=d.toISOString().slice(0,10); const v=dayMap[k]||{imp:0,link:0,lpv:0};
-  daily.push({Day:k, Impressions:v.imp, LinkClicks:v.link, LPV:v.lpv});
+  const k=d.toISOString().slice(0,10); const v=dayMap[k]||{imp:0,link:0,lpv:0,spend:0,views:0};
+  daily.push({Day:k, Impressions:v.imp, LinkClicks:v.link, LPV:v.lpv, Spend:Math.round(v.spend*100)/100, Views:v.views});
 }
 
 function fmtMoney(v){return 'R$ ' + Number(v).toLocaleString('pt-BR',{maximumFractionDigits:0});}
@@ -391,8 +387,8 @@ const pct2 = v => v.toFixed(2).replace('.',',')+'%';
 const kpis = [
   {label:'Investimento total', value:fmtMoney2(t.spend), cls:'accent', series:M.map(m=>m.spend), color:'#ff7a3d', fmt:fmtMoney2},
   {label:'Impressões', value:fmtNum(t.imp), cls:'green', series:M.map(m=>m.imp), color:'#3ddc97', fmt:fmtNum},
-  {label:'Alcance (*)', value:fmtNum(t.reach), cls:'accent', sub:'soma das campanhas · não dedup.', series:M.map(m=>m.reach), color:'#ff7a3d', fmt:fmtNum},
-  {label:'Frequência (*)', value:t.freq.toFixed(2).replace('.',','), cls:'green', sub:'impressões ÷ alcance', series:M.map(m=>m.freq), color:'#3ddc97', fmt:v=>v.toFixed(2).replace('.',',')},
+  {label:'Alcance', value:fmtNum(t.reach), cls:'accent', sub:'real do Gerenciador · não somável', series:M.map(m=>m.reach), color:'#ff7a3d', fmt:fmtNum},
+  {label:'Frequência', value:t.freq.toFixed(2).replace('.',','), cls:'green', sub:'real do Gerenciador', series:M.map(m=>m.freq), color:'#3ddc97', fmt:v=>v.toFixed(2).replace('.',',')},
   {label:'Visualizações', value:fmtNum(t.views), cls:'accent', sub:'objetivo IG e FB', series:M.map(m=>m.views), color:'#ff7a3d', fmt:fmtNum},
   {label:'Video Plays', value:fmtNum(t.plays), cls:'green', sub:'reproduções de vídeo', series:M.map(m=>m.plays), color:'#3ddc97', fmt:fmtNum},
   {label:'Engajamento', value:fmtNum(t.eng), cls:'accent', sub:'objetivo FB', series:M.map(m=>m.eng), color:'#ff7a3d', fmt:fmtNum},
@@ -428,38 +424,24 @@ function sparkline(elId, series, color, h){
 }
 kpis.forEach((k,i)=>sparkline('spark'+i, k.series, k.color));
 
-// ---- 2 - trend ----
-const trendMetric = M.map(m=>m.views);
-const trendPointLabels = {
-  id:'trendPointLabels',
-  afterDatasetsDraw(chart){
-    const {ctx} = chart; const meta = chart.getDatasetMeta(0);
-    ctx.save(); ctx.font="600 11px 'IBM Plex Mono',monospace";
-    ctx.textAlign='center'; ctx.textBaseline='bottom';
-    ctx.fillStyle='#3ddc97'; meta.data.forEach((p,i)=>ctx.fillText(fmtNum(trendMetric[i]), p.x, p.y-8));
-    const m1 = chart.getDatasetMeta(1);
-    ctx.fillStyle='#ff7a3d'; m1.data.forEach((p,i)=>ctx.fillText(fmtMoney2(M[i].spend), p.x, p.y-8));
-    ctx.restore();
-  }
-};
-const trendChart = new Chart(document.getElementById('trendChart'), {
+// ---- 2 - investimento x visualizações (diário) ----
+const dailyLabels = daily.map(d=>{const p=d.Day.split('-');return p[2]+'/'+p[1];});
+new Chart(document.getElementById('trendChart'), {
   type:'line',
-  data:{labels:months, datasets:[
-    {type:'line', label:'Visualizações', data:trendMetric, borderColor:'#3ddc97', backgroundColor:'#3ddc97', borderWidth:2, tension:.35, yAxisID:'y1', pointRadius:3, order:0},
-    {type:'line', label:'Investimento', data:M.map(m=>m.spend), borderColor:'#ff7a3d', backgroundColor:'#ff7a3d', borderWidth:2, tension:.35, yAxisID:'y', pointRadius:3, order:1}
+  data:{labels:dailyLabels, datasets:[
+    {label:'Investimento', data:daily.map(d=>d.Spend), borderColor:'#ff7a3d', backgroundColor:'#ff7a3d', borderWidth:2, pointRadius:0, tension:.3, yAxisID:'y'},
+    {label:'Visualizações', data:daily.map(d=>d.Views), borderColor:'#3ddc97', backgroundColor:'#3ddc97', borderWidth:2, pointRadius:0, tension:.3, yAxisID:'y1'}
   ]},
-  plugins:[trendPointLabels],
-  options:{responsive:true, interaction:{mode:'index',intersect:false}, layout:{padding:{top:20}},
+  options:{responsive:true, interaction:{mode:'index',intersect:false},
     plugins:{legend:{labels:{color:'#8b919d',font:{family:'monospace',size:11}}}},
     scales:{
-      x:{ticks:{color:'#8b919d'}, grid:{color:'#2a2e38'}},
+      x:{ticks:{color:'#8b919d',autoSkip:true,maxRotation:0,maxTicksLimit:16}, grid:{color:'#2a2e38'}},
       y:{position:'left', ticks:{color:'#8b919d', callback:v=>'R$'+v}, grid:{color:'#2a2e38'}, title:{display:true,text:'Investimento',color:'#8b919d',font:{size:10}}},
       y1:{position:'right', ticks:{color:'#8b919d'}, grid:{display:false}, title:{display:true,text:'Visualizações',color:'#8b919d',font:{size:10}}}
     }}
 });
 
 // ---- 3 - daily ----
-const dailyLabels = daily.map(d=>{const p=d.Day.split('-');return p[2]+'/'+p[1];});
 new Chart(document.getElementById('dailyChart'), {
   type:'line',
   data:{labels:dailyLabels, datasets:[
@@ -486,18 +468,6 @@ document.getElementById('metricDetailContainer').innerHTML = kpis.map((k,i)=>`
     </table>
   </div>`).join('');
 kpis.forEach((k,i)=>sparkline('metricChart'+i, k.series, k.color, 70));
-
-// ---- monthly spend table aligned ----
-document.getElementById('monthlySpendHead').innerHTML = months.map(m=>`<th style="text-align:center">${m}</th>`).join('');
-document.getElementById('monthlySpendRow').innerHTML = M.map(m=>`<td style="text-align:center">${fmtMoney2(m.spend)}</td>`).join('');
-function alignSpendTable(){
-  const area = trendChart.chartArea; if(!area) return;
-  const table = document.getElementById('monthlySpendTable');
-  table.style.marginLeft = area.left + 'px';
-  table.style.width = (area.right - area.left) + 'px';
-}
-alignSpendTable();
-window.addEventListener('resize', ()=>setTimeout(alignSpendTable, 60));
 
 // ---- 4 - invest by type ----
 const typesSorted = [...types].sort((a,b)=>b.spend-a.spend);
@@ -637,25 +607,25 @@ const stageCards = [
   [
     {label:'Valor Gasto', value:fmtMoney2(r_.spend)},
     {label:'Alcance', value:fmtNum(r_.reach)},
+    {label:'Impressões', value:fmtNum(r_.imp)},
     {label:'Visualizações', value:fmtNum(r_.views)},
     {label:'Engajamento', value:fmtNum(r_.eng)},
-    {label:'Impressões', value:fmtNum(r_.imp)},
     {label:'CPM', value:fmtMoney2(r_.cpm)}
   ],
   [
     {label:'Valor Gasto', value:fmtMoney2(f_.spend)},
     {label:'Alcance', value:fmtNum(f_.reach)},
+    {label:'Impressões', value:fmtNum(f_.imp)},
     {label:'Visualizações', value:fmtNum(f_.views)},
     {label:'Engajamento', value:fmtNum(f_.eng)},
-    {label:'Impressões', value:fmtNum(f_.imp)},
     {label:'CPM', value:fmtMoney2(f_.cpm)}
   ],
   [
     {label:'Valor Gasto', value:fmtMoney2(t_.spend)},
     {label:'Visualização de Página', value:fmtNum(t_.lpv), note:fmtMoney2(t_.spend/t_.lpv)+'/LPV'},
-    {label:'Cliques no Link', value:fmtNum(t_.link), note:'CTR '+pct2(t_.link/t_.imp*100)},
-    {label:'Engajamento', value:fmtNum(t_.eng)},
     {label:'Impressões', value:fmtNum(t_.imp)},
+    {label:'Engajamento', value:fmtNum(t_.eng)},
+    {label:'Cliques no Link', value:fmtNum(t_.link), note:'CTR '+pct2(t_.link/t_.imp*100)},
     {label:'CPM', value:fmtMoney2(t_.cpm)}
   ]
 ];
@@ -670,10 +640,10 @@ document.getElementById('stageFoot0').innerHTML =
   '. Campanha <code>01 | [IG] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento, otimizada por alcance; ativa). Alcance = valor real da campanha. Resultado do Gerenciador: 365.598 pessoas alcançadas a R$ 2,00 cada mil.';
 document.getElementById('stageFoot1').innerHTML =
   'Frequência ' + fq(f_.freq) + ' · ThruPlays ' + fmtNum(f_.thruplay) + ' · Vídeo 75% ' + fmtNum(f_.p75) + ' · Vídeo 100% ' + fmtNum(f_.p100) + ' · Cliques no link ' + fmtNum(f_.link) +
-  '. Campanha <code>02 | [FB] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento; começou em 05/10/2026, entregou de 06 a 12/10; pausada). Alcance = valor real da campanha. Objetivo do Facebook: visualizações e engajamento.';
+  '. Campanha <code>02 | [FB] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento; começou em 05/10/2026, entregou de 06 a 12/10; ativa). Alcance = valor real da campanha. Objetivo do Facebook: visualizações e engajamento.';
 document.getElementById('stageFoot2').innerHTML =
   'Frequência ' + fq(t_.freq) + ' · Alcance ' + fmtNum(t_.reach) + ' · ThruPlays ' + fmtNum(t_.thruplay) + ' · Vídeo 75% ' + fmtNum(t_.p75) +
-  '. Campanha <code>03 | [Tráfego] Perfil GrupoRBS_Negócios</code> (objetivo Tráfego, destino perfil do Instagram, público morno + frio; começou em 16/09/2026; pausada). Resultado = visualização de página de destino. CTR = cliques no link ÷ impressões.';
+  '. Campanha <code>03 | [Tráfego] Perfil GrupoRBS_Negócios</code> (objetivo Tráfego, destino perfil do Instagram, público morno + frio; começou em 16/09/2026; ativa). Resultado = visualização de página de destino. CTR = cliques no link ÷ impressões.';
 </script>
 </body>
 </html>
