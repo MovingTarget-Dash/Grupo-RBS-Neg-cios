@@ -102,11 +102,15 @@
   html{scroll-behavior:smooth;}
   [id^="sec-"]{scroll-margin-top:16px;}
   .brand-block{display:flex;align-items:center;gap:18px;min-width:0;}
-  .brand-logo{width:76px;height:76px;border-radius:50%;border:1.5px solid #fff;flex-shrink:0;object-fit:cover;background:#fff;}
-  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin:-8px 0 28px;}
-  .top-nav a{flex:1 1 140px;text-align:center;text-decoration:none;color:var(--accent-2);background:transparent;border:1.5px solid var(--accent-2);border-radius:999px;padding:10px 18px;font-size:13px;font-weight:600;letter-spacing:.02em;transition:background .15s,color .15s;}
+  .brand-logo{width:68px;height:68px;border-radius:50%;border:1.5px solid #fff;flex-shrink:0;object-fit:cover;background:#fff;}
+  .top-nav{display:flex;gap:14px;flex-wrap:wrap;margin:-6px 0 26px;}
+  .top-nav a{flex:1 1 140px;text-align:center;text-decoration:none;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;font-weight:600;color:var(--accent-2);background:var(--panel);border:1px solid var(--accent-2);border-radius:10px;padding:14px 16px;transition:background .15s,color .15s;}
   .top-nav a:hover,.top-nav a:focus-visible{background:var(--accent-2);color:var(--bg);outline:none;}
-  @media(max-width:560px){.brand-logo{width:60px;height:60px;}.top-nav a{flex-basis:calc(50% - 5px);}}
+  .to-top{position:fixed;right:22px;bottom:22px;z-index:50;display:flex;align-items:center;gap:8px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-size:10.5px;font-weight:600;color:var(--accent);background:var(--panel);border:1.5px solid var(--accent);border-radius:10px;padding:12px 18px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.45);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s,transform .2s,visibility .2s,background .15s,color .15s;}
+  .to-top.show{opacity:1;visibility:visible;transform:none;}
+  .to-top:hover,.to-top:focus-visible{background:var(--accent);color:var(--bg);outline:none;}
+  @media(max-width:560px){.to-top{right:14px;bottom:14px;padding:11px 14px;}}
+  @media(max-width:560px){.brand-logo{width:60px;height:60px;}.top-nav a{flex-basis:calc(50% - 7px);}}
 </style>
 </head>
 <body>
@@ -120,14 +124,14 @@
         <h1>Performance de Campanhas &mdash; Grupo RBS Neg&oacute;cios</h1>
       </div>
     </div>
-    <div class="period">Per&iacute;odo analisado<br><strong>15 set &mdash; 14 out 2026</strong></div>
+    <div class="period">Per&iacute;odo analisado<br><strong>15 set &mdash; 14 out 2026</strong><br><span style="color:var(--accent);">Fase 1 (30 dias)</span></div>
   </header>
 
   <nav class="top-nav" aria-label="Navega&ccedil;&atilde;o do relat&oacute;rio">
-    <a href="#sec-planejamento">Bot&atilde;o 1</a>
-    <a href="#sec-metricas">Bot&atilde;o 2</a>
-    <a href="#sec-tipos">Bot&atilde;o 3</a>
-    <a href="#sec-estrutura">Bot&atilde;o 4</a>
+    <a href="#sec-planejamento">Or&ccedil;amento</a>
+    <a href="#sec-tipos">Tipos de campanhas</a>
+    <a href="#sec-detalhe">M&eacute;tricas</a>
+    <a href="#sec-estrutura">Estrutura e p&uacute;blicos</a>
   </nav>
 
   <div class="panel">
@@ -200,7 +204,7 @@
 
   <div class="panel stage-panel" id="sec-orcado">
     <div class="panel-head">
-      <h2>2 - Or&ccedil;ado x Planejado</h2>
+      <h2>2 - Or&ccedil;ado x Realizado</h2>
       <span class="note">investimento realizado &middot; 15/09 &mdash; 14/10</span>
     </div>
     <div class="stage-card-row" id="budgetCards" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));"></div>
@@ -209,6 +213,7 @@
         <span style="font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.06em;">Investimento realizado x or&ccedil;amento planejado</span>
         <span id="budgetSummary" style="font-family:var(--mono);font-size:12px;color:var(--ink);"></span>
       </div>
+      <div id="budgetTop" style="position:relative;height:30px;font-family:var(--mono);font-size:10px;"></div>
       <div style="position:relative;height:18px;background:#262a33;border:1px solid #5a6070;border-radius:9px;overflow:hidden;box-sizing:border-box;">
         <div id="budgetFill" style="position:absolute;left:0;top:0;bottom:0;background:var(--accent);"></div>
         <div id="budgetDiv1" style="position:absolute;top:0;bottom:0;width:1px;background:#5a6070;"></div>
@@ -327,7 +332,7 @@
     <div class="foot-note" id="stageFoot2"></div>
   </div>
 
-  <div class="panel">
+  <div class="panel" id="sec-detalhe">
     <div class="panel-head">
       <h2>15 - Detalhamento mensal por m&eacute;trica</h2>
       <span class="note">12 m&eacute;tricas</span>
@@ -771,12 +776,24 @@ document.getElementById('stageFoot2').innerHTML =
   document.getElementById('budgetFill').style.width = pctTotal+'%';
   document.getElementById('budgetDiv1').style.left = b1+'%';
   document.getElementById('budgetDiv2').style.left = b2+'%';
+  document.getElementById('budgetTop').innerHTML =
+    '<div style="position:absolute;left:'+b1+'%;transform:translateX(-50%);bottom:7px;white-space:nowrap;color:var(--ink);text-align:center;">Planejado Mês 1 · <strong>'+fmtMoney2(budget[0])+'</strong></div>'+
+    '<div style="position:absolute;left:'+b1+'%;bottom:0;height:7px;width:1px;background:var(--ink);"></div>';
   document.getElementById('budgetTicks').innerHTML =
     '<span style="position:absolute;left:0;">R$ 0</span>'+
     '<span style="position:absolute;left:'+pctTotal+'%;transform:translateX(-50%);color:var(--accent);">'+fmtMoney2(real)+'</span>'+
     '<span style="position:absolute;right:0;">'+fmtMoney(total)+'</span>';
   document.getElementById('budgetMonths').innerHTML = budget.map((b,i)=>'<div style="width:'+seg[i]+'%;text-align:'+(['left','center','right'][i])+';">Mês '+(i+1)+' · '+fmtMoney(b)+'</div>').join('');
   document.getElementById('budgetFoot').innerHTML = 'Orçamento planejado: Mês 1 (15/09–14/10) '+fmtMoney2(budget[0])+' · Mês 2 (15/10–14/11) '+fmtMoney2(budget[1])+' · Mês 3 (15/11–14/12) '+fmtMoney2(budget[2])+'. Realizado = investimento das 3 campanhas no período do relatório, que coincide com o Mês 1 completo: '+pf(pctM1)+' do orçamento do mês ('+fmtMoney2(budget[0]-real)+' abaixo do planejado; média de '+fmtMoney2(real/30)+'/dia contra R$ 63/dia previstos). A barra tem os meses na proporção do orçamento de cada um.';
+})();
+</script>
+<button type="button" class="to-top" id="toTop" aria-label="Voltar para o topo">&uarr; Voltar para o topo</button>
+<script>
+(function(){
+  const b=document.getElementById('toTop');
+  function upd(){ b.classList.toggle('show', window.scrollY>400); }
+  window.addEventListener('scroll', upd, {passive:true}); upd();
+  b.addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 })();
 </script>
 </body>
