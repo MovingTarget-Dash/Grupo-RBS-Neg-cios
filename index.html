@@ -51,6 +51,7 @@
   .stage-card .value{display:flex;align-items:baseline;justify-content:space-between;gap:6px;font-family:var(--mono);font-size:16px;font-weight:600;color:var(--ink);}
   .stage-card .value .scard-num{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .stage-card .value.accent{color:var(--accent);}
+  .stage-card .value.green{color:var(--accent-2);}
   .stage-card .scard-note{font-family:var(--mono);font-size:11px;font-weight:400;color:var(--ink-dim);white-space:nowrap;flex-shrink:0;}
   @media(max-width:900px){.stage-card-row{grid-template-columns:repeat(3,1fr);}}
   @media(max-width:560px){.stage-card-row{grid-template-columns:repeat(2,1fr);}}
@@ -215,7 +216,7 @@
       </div>
       <div id="budgetTop" style="position:relative;height:30px;font-family:var(--mono);font-size:10px;"></div>
       <div style="position:relative;height:18px;background:#262a33;border:1px solid #5a6070;border-radius:9px;overflow:hidden;box-sizing:border-box;">
-        <div id="budgetFill" style="position:absolute;left:0;top:0;bottom:0;background:var(--accent);"></div>
+        <div id="budgetFill" style="position:absolute;left:0;top:0;bottom:0;background:var(--accent-2);"></div>
         <div id="budgetDiv1" style="position:absolute;top:0;bottom:0;width:1px;background:#5a6070;"></div>
         <div id="budgetDiv2" style="position:absolute;top:0;bottom:0;width:1px;background:#5a6070;"></div>
       </div>
@@ -769,8 +770,8 @@ document.getElementById('stageFoot2').innerHTML =
     {label:'Mês 1 · realizado ÷ planejado', value:pf(pctM1)}
   ];
   document.getElementById('budgetCards').innerHTML = cards.map((c,j)=>`
-    <div class="stage-card"><div class="label">${c.label}</div><div class="value ${j<2?'accent':''}"><span class="scard-num">${c.value}</span>${c.note?`<span class="scard-note">${c.note}</span>`:''}</div></div>`).join('');
-  document.getElementById('budgetSummary').innerHTML = '<strong style="color:var(--accent);">'+fmtMoney2(real)+'</strong> realizados &middot; '+fmtMoney2(total-real)+' a investir &middot; '+pf(pctTotal);
+    <div class="stage-card"><div class="label">${c.label}</div><div class="value ${j===0?'accent':(j===1?'green':'')}"><span class="scard-num">${c.value}</span>${c.note?`<span class="scard-note">${c.note}</span>`:''}</div></div>`).join('');
+  document.getElementById('budgetSummary').innerHTML = '<strong style="color:var(--accent-2);">'+fmtMoney2(real)+'</strong> realizados &middot; '+fmtMoney2(total-real)+' a investir &middot; '+pf(pctTotal);
   const seg = budget.map(b=>b/total*100);
   const b1 = seg[0], b2 = seg[0]+seg[1];
   document.getElementById('budgetFill').style.width = pctTotal+'%';
@@ -781,9 +782,9 @@ document.getElementById('stageFoot2').innerHTML =
     '<div style="position:absolute;left:'+b1+'%;bottom:0;height:7px;width:1px;background:var(--ink);"></div>';
   document.getElementById('budgetTicks').innerHTML =
     '<span style="position:absolute;left:0;">R$ 0</span>'+
-    '<span style="position:absolute;left:'+pctTotal+'%;transform:translateX(-50%);color:var(--accent);">'+fmtMoney2(real)+'</span>'+
+    '<span style="position:absolute;left:'+pctTotal+'%;transform:translateX(-50%);color:var(--accent-2);">'+fmtMoney2(real)+'</span>'+
     '<span style="position:absolute;right:0;">'+fmtMoney(total)+'</span>';
-  document.getElementById('budgetMonths').innerHTML = budget.map((b,i)=>'<div style="width:'+seg[i]+'%;text-align:'+(['left','center','right'][i])+';">Mês '+(i+1)+' · '+fmtMoney(b)+'</div>').join('');
+  document.getElementById('budgetMonths').innerHTML = budget.map((b,i)=>'<div style="width:'+seg[i]+'%;text-align:center;">Mês '+(i+1)+' · '+fmtMoney(b)+'</div>').join('');
   document.getElementById('budgetFoot').innerHTML = 'Orçamento planejado: Mês 1 (15/09–14/10) '+fmtMoney2(budget[0])+' · Mês 2 (15/10–14/11) '+fmtMoney2(budget[1])+' · Mês 3 (15/11–14/12) '+fmtMoney2(budget[2])+'. Realizado = investimento das 3 campanhas no período do relatório, que coincide com o Mês 1 completo: '+pf(pctM1)+' do orçamento do mês ('+fmtMoney2(budget[0]-real)+' abaixo do planejado; média de '+fmtMoney2(real/30)+'/dia contra R$ 63/dia previstos). A barra tem os meses na proporção do orçamento de cada um.';
 })();
 </script>
