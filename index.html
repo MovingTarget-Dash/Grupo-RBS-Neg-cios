@@ -98,17 +98,37 @@
   footer{text-align:center;font-size:11px;color:var(--ink-dim);font-family:var(--mono);padding-top:10px;margin-top:8px;}
   @media(max-width:560px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.grid-2{grid-template-columns:1fr;}}
 </style>
+<style>
+  html{scroll-behavior:smooth;}
+  [id^="sec-"]{scroll-margin-top:16px;}
+  .brand-block{display:flex;align-items:center;gap:18px;min-width:0;}
+  .brand-logo{width:76px;height:76px;border-radius:50%;border:1.5px solid #fff;flex-shrink:0;object-fit:cover;background:#fff;}
+  .top-nav{display:flex;gap:10px;flex-wrap:wrap;margin:-8px 0 28px;}
+  .top-nav a{flex:1 1 140px;text-align:center;text-decoration:none;color:var(--accent-2);background:transparent;border:1.5px solid var(--accent-2);border-radius:999px;padding:10px 18px;font-size:13px;font-weight:600;letter-spacing:.02em;transition:background .15s,color .15s;}
+  .top-nav a:hover,.top-nav a:focus-visible{background:var(--accent-2);color:var(--bg);outline:none;}
+  @media(max-width:560px){.brand-logo{width:60px;height:60px;}.top-nav a{flex-basis:calc(50% - 5px);}}
+</style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <div class="title-block">
-      <div class="eyebrow">Meta Ads &middot; Relat&oacute;rio de An&uacute;ncios</div>
-      <h1>Performance de Campanhas &mdash; Grupo RBS Neg&oacute;cios</h1>
+    <div class="brand-block">
+      <img class="brand-logo" src="assets/logo-grupo-rbs-negocios.png" alt="Grupo RBS Neg&oacute;cios">
+      <div class="title-block">
+        <div class="eyebrow">Meta Ads &middot; Relat&oacute;rio de An&uacute;ncios</div>
+        <h1>Performance de Campanhas &mdash; Grupo RBS Neg&oacute;cios</h1>
+      </div>
     </div>
-    <div class="period">Per&iacute;odo analisado<br><strong>15 set &mdash; 12 out 2026</strong></div>
+    <div class="period">Per&iacute;odo analisado<br><strong>15 set &mdash; 14 out 2026</strong></div>
   </header>
+
+  <nav class="top-nav" aria-label="Navega&ccedil;&atilde;o do relat&oacute;rio">
+    <a href="#sec-planejamento">Bot&atilde;o 1</a>
+    <a href="#sec-metricas">Bot&atilde;o 2</a>
+    <a href="#sec-tipos">Bot&atilde;o 3</a>
+    <a href="#sec-estrutura">Bot&atilde;o 4</a>
+  </nav>
 
   <div class="panel">
     <div class="panel-head">
@@ -135,166 +155,13 @@
       (<code>01 | [IG] [Reconhecimento] Grupo_RBS_Neg&oacute;cios</code>, <code>02 | [FB] [Reconhecimento] Grupo_RBS_Neg&oacute;cios</code> e <code>03 | [Tr&aacute;fego] Perfil GrupoRBS_Neg&oacute;cios</code>).
       A 01 come&ccedil;ou em <strong>15/09/2026</strong>, a 03 em <strong>16/09/2026</strong> e a 02 em <strong>05/10/2026</strong> (primeira entrega em 06/10).
       Objetivos do perfil: Instagram = seguidores e visualiza&ccedil;&otilde;es &middot; Facebook = visualiza&ccedil;&otilde;es e engajamento. A conta n&atilde;o &eacute; de e-commerce.
-      <strong>Alcance e Frequ&ecirc;ncia</strong> do per&iacute;odo = valores reais do Gerenciador &mdash; n&atilde;o som&aacute;veis.
+      <strong>Alcance e Frequ&ecirc;ncia</strong> do per&iacute;odo e dos meses = valores reais do Gerenciador &mdash; n&atilde;o som&aacute;veis.
     </div>
   </div>
 
-  <div class="panel-head" style="margin-bottom:12px;"><h2>1 - Quadro geral de m&eacute;tricas</h2></div>
-  <div class="kpi-grid" id="kpiGrid"></div>
-  <div class="foot-note" style="margin:-8px 0 24px;">
-    <strong>Alcance e Frequ&ecirc;ncia</strong> do per&iacute;odo = valores reais do Gerenciador: <strong>522.390 / 1,60</strong>. Mensal (Gerenciador): Set <strong>209.474 / 1,38</strong> &middot; Out <strong>380.801 / 1,44</strong>. Alcance n&atilde;o &eacute; som&aacute;vel: a soma dos meses (590.275) fica acima do total do per&iacute;odo (522.390, deduplicado).
-    "Visualiza&ccedil;&otilde;es" = <code>media_views</code> (vezes que o an&uacute;ncio foi reproduzido ou exibido). "Engajamento" = <code>post_engagement</code> (todas as a&ccedil;&otilde;es nos an&uacute;ncios).
-  </div>
-
-  <div class="panel">
+  <div class="panel stage-panel" id="sec-planejamento">
     <div class="panel-head">
-      <h2>2 - Investimento vs Visualiza&ccedil;&otilde;es - por dia</h2>
-      <span class="note">di&aacute;rio</span>
-    </div>
-    <canvas id="trendChart" height="90"></canvas>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <h2>3 - Impress&otilde;es e Cliques no link - por dia</h2>
-      <span class="note">di&aacute;rio</span>
-    </div>
-    <canvas id="dailyChart" height="90"></canvas>
-  </div>
-
-  <div class="section-head"><h2>Tipo de campanhas</h2></div>
-
-  <div class="grid-2">
-    <div class="panel" style="margin-bottom:0;">
-      <div class="panel-head">
-        <h2>4 - Investimento por tipo de campanha</h2>
-        <span class="note">R$</span>
-      </div>
-      <canvas id="typeChart" height="220"></canvas>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:20px;height:100%;">
-      <div class="panel" style="padding:14px 16px;margin-bottom:0;flex-shrink:0;">
-        <div class="panel-head" style="margin-bottom:10px;">
-          <h2 style="font-size:12px;">5 - Ranking por tipo &mdash; Visualiza&ccedil;&otilde;es</h2>
-          <span class="note" style="font-size:10px;">result. &middot; custo</span>
-        </div>
-        <div style="overflow-x:auto;">
-        <table id="typeTable" style="font-size:11px;table-layout:fixed;width:100%;">
-          <colgroup><col style="width:30%"><col style="width:18%"><col style="width:20%"><col style="width:14%"><col style="width:18%"></colgroup>
-          <thead><tr><th>Tipo</th><th>Gasto</th><th>Visualiz.</th><th>Engaj.</th><th>R$/mil</th></tr></thead>
-          <tbody></tbody>
-          <tfoot id="typeTableFoot"></tfoot>
-        </table>
-        </div>
-      </div>
-      <div class="panel" style="padding:14px 16px;margin-bottom:0;flex:1;display:flex;flex-direction:column;min-height:0;">
-        <div class="panel-head" style="margin-bottom:10px;flex-shrink:0;">
-          <h2 style="font-size:12px;">6 - Cliques no link x Visualiza&ccedil;&atilde;o de p&aacute;gina</h2>
-          <span class="note" style="font-size:10px;">di&aacute;rio</span>
-        </div>
-        <div style="flex:1;min-height:200px;position:relative;"><canvas id="contentViewsChart"></canvas></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="grid-2">
-    <div class="panel" style="display:flex;flex-direction:column;">
-      <div class="panel-head" style="flex-shrink:0;">
-        <h2>7 - Investimento por tipo de campanha (funil)</h2>
-        <span class="note">R$ &middot; topo &rarr; meio</span>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
-        <div id="funnelChart"></div>
-        <div id="funnelLegend" style="margin-top:26px;"></div>
-      </div>
-    </div>
-    <div class="panel" style="display:flex;flex-direction:column;">
-      <div class="panel-head" style="flex-shrink:0;">
-        <h2>8 - Valor gasto x tipo</h2>
-        <span class="note">% do investimento</span>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:10px 0;">
-        <div style="width:72%;max-width:348px;aspect-ratio:1/1;"><canvas id="typeDonutChart"></canvas></div>
-        <div id="typeDonutLegend" style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <h2>9 - Tipo de Campanha por M&ecirc;s</h2>
-      <span class="note">% do investimento &middot; por m&ecirc;s</span>
-    </div>
-    <div id="monthTypeGrid" style="grid-template-columns:repeat(2,1fr);"></div>
-  </div>
-
-  <div class="panel stage-panel">
-    <div class="panel-head"><h2>10 - Reconhecimento &middot; Instagram [Topo de Funil]</h2></div>
-    <div class="stage-card-row" id="stageCards0"></div>
-    <div class="foot-note" id="stageFoot0"></div>
-  </div>
-
-  <div class="panel stage-panel">
-    <div class="panel-head"><h2>11 - Reconhecimento &middot; Facebook [Topo de Funil]</h2></div>
-    <div class="stage-card-row" id="stageCards1"></div>
-    <div class="foot-note" id="stageFoot1"></div>
-  </div>
-
-  <div class="panel stage-panel">
-    <div class="panel-head"><h2>12 - Tr&aacute;fego &middot; Perfil Instagram [Meio de Funil]</h2></div>
-    <div class="stage-card-row" id="stageCards2"></div>
-    <div class="foot-note" id="stageFoot2"></div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <h2>13 - Detalhamento mensal por m&eacute;trica</h2>
-      <span class="note">12 m&eacute;tricas</span>
-    </div>
-    <div id="metricDetailContainer"></div>
-    <div class="foot-note">S&eacute;rie mensal: Set/26 = 15&ndash;30/09 (campanhas 01 e 03) &middot; Out/26 = 01&ndash;12/10 (as 3 campanhas; a 02 de Facebook entrou em 05/10). Alcance e Frequ&ecirc;ncia mensais = <strong>valores reais do Gerenciador</strong> (Set 209.474 / 1,38 &middot; Out 380.801 / 1,44). Alcance n&atilde;o &eacute; som&aacute;vel: a soma dos meses (590.275) fica acima do total do per&iacute;odo (522.390, deduplicado).</div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <h2>14 - Notas metodol&oacute;gicas &amp; defini&ccedil;&otilde;es</h2>
-      <span class="note">como ler os n&uacute;meros</span>
-    </div>
-    <table class="notes-table">
-      <tr>
-        <td class="nkey">Fonte dos dados</td>
-        <td class="nval">Conector <strong>Meta Ads (MCP)</strong>, dados ao vivo da conta <strong>Grupo RBS (Comunica&ccedil;&atilde;o)</strong> (604645906372904). Recorte: 3 campanhas do perfil <strong>Grupo RBS Neg&oacute;cios</strong>. Per&iacute;odo <strong>15 set &ndash; 12 out 2026</strong>. Janela de atribui&ccedil;&atilde;o padr&atilde;o: <strong>7 dias clique / 1 dia visualiza&ccedil;&atilde;o</strong>.</td>
-      </tr>
-      <tr>
-        <td class="nkey">Objetivos do perfil</td>
-        <td class="nval">Instagram: <strong>seguidores e visualiza&ccedil;&otilde;es</strong>. Facebook: <strong>visualiza&ccedil;&otilde;es e engajamento</strong>. O briefing prev&ecirc; veicula&ccedil;&atilde;o de 15/09 a 14/12; este relat&oacute;rio cobre at&eacute; 12/10.</td>
-      </tr>
-      <tr>
-        <td class="nkey">Alcance e Frequ&ecirc;ncia</td>
-        <td class="nval">Nas campanhas (blocos 10, 11 e 12) o alcance &eacute; o <strong>valor real da campanha</strong>. No per&iacute;odo: Alcance <strong>522.390</strong>, Frequ&ecirc;ncia <strong>1,60</strong> (valores reais do Gerenciador, todas as campanhas juntas). Mensal (Gerenciador): Set <strong>209.474</strong> / 1,38 &middot; Out <strong>380.801</strong> / 1,44. <strong>N&atilde;o s&atilde;o som&aacute;veis</strong> &mdash; a soma dos meses (590.275) fica acima do total do per&iacute;odo (522.390) porque a mesma pessoa &eacute; contada em mais de um m&ecirc;s.</td>
-      </tr>
-      <tr>
-        <td class="nkey">Tipos de campanha</td>
-        <td class="nval"><code>[IG] [Reconhecimento]</code> e <code>[FB] [Reconhecimento]</code> &rarr; Reconhecimento (Topo, objetivo OUTCOME_AWARENESS, otimizada por alcance) &middot; <code>[Tr&aacute;fego] Perfil</code> &rarr; Tr&aacute;fego (Meio, objetivo OUTCOME_TRAFFIC, resultado = visualiza&ccedil;&atilde;o de p&aacute;gina de destino). A soma dos 3 tipos = investimento total do recorte (R$ 1.609,31). Impress&otilde;es, cliques, v&iacute;deo e visualiza&ccedil;&otilde;es batem entre a soma por tipo/m&ecirc;s/dia e o total.</td>
-      </tr>
-      <tr>
-        <td class="nkey">CTR (cliques no link)</td>
-        <td class="nval">Cliques no link &divide; impress&otilde;es. Total <strong>0,35%</strong> (Reconhecimento IG 0,17% &middot; Reconhecimento FB 0,01% &middot; Tr&aacute;fego 2,56%). O CTR "todos os cliques" do Gerenciador &eacute; maior (Tr&aacute;fego 2,66%).</td>
-      </tr>
-      <tr>
-        <td class="nkey">Campanha 02 [FB]</td>
-        <td class="nval">Come&ccedil;ou em 05/10/2026 e est&aacute; <strong>ativa</strong>; no per&iacute;odo entregou de 06 a 12/10.</td>
-      </tr>
-      <tr class="hl">
-        <td class="nkey">Fora do recorte</td>
-        <td class="nval">A campanha <code>editais | 2026</code> (R$ 63,52 no per&iacute;odo) pertence &agrave; mesma conta, mas n&atilde;o ao perfil Grupo RBS Neg&oacute;cios. Tamb&eacute;m n&atilde;o entra a campanha <code>Grupo RBS Neg&oacute;cios | Lead</code> (sem gasto no per&iacute;odo).</td>
-      </tr>
-    </table>
-  </div>
-
-  <div class="panel stage-panel">
-    <div class="panel-head">
-      <h2>15 - Planejamento &middot; objetivos e or&ccedil;amento</h2>
+      <h2>1 - Planejamento &middot; objetivos e or&ccedil;amento</h2>
       <span class="note">15/09 &mdash; 14/12/2026</span>
     </div>
     <div class="stage-card-row" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:12px;">
@@ -309,16 +176,16 @@
     <div style="margin:22px 0 6px;">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
         <span style="font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.06em;">Linha do tempo &middot; 91 dias de veicula&ccedil;&atilde;o</span>
-        <span style="font-family:var(--mono);font-size:12px;color:var(--ink);"><strong style="color:var(--accent);">28 dias</strong> percorridos &middot; 63 a percorrer &middot; 30,8%</span>
+        <span style="font-family:var(--mono);font-size:12px;color:var(--ink);"><strong style="color:var(--accent);">30 dias</strong> percorridos &middot; 61 a percorrer &middot; 33,0%</span>
       </div>
       <div style="position:relative;height:18px;background:#262a33;border:1px solid #5a6070;border-radius:9px;overflow:hidden;box-sizing:border-box;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:30.77%;background:var(--accent);"></div>
+        <div style="position:absolute;left:0;top:0;bottom:0;width:32.97%;background:var(--accent);"></div>
         <div style="position:absolute;left:32.97%;top:0;bottom:0;width:1px;background:#5a6070;"></div>
         <div style="position:absolute;left:67.03%;top:0;bottom:0;width:1px;background:#5a6070;"></div>
       </div>
       <div style="position:relative;height:22px;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);">
         <span style="position:absolute;left:0;">15/09</span>
-        <span style="position:absolute;left:30.77%;transform:translateX(-50%);color:var(--accent);">12/10 &middot; hoje</span>
+        <span style="position:absolute;left:32.97%;transform:translateX(-50%);color:var(--accent);">14/10 &middot; relat&oacute;rio</span>
         <span style="position:absolute;left:67.03%;transform:translateX(-50%);">14/11</span>
         <span style="position:absolute;right:0;">14/12</span>
       </div>
@@ -328,12 +195,187 @@
         <div style="width:32.97%;text-align:right;">M&ecirc;s 3 &middot; 30 dias</div>
       </div>
     </div>
-    <div class="foot-note">Or&ccedil;amento planejado (anota&ccedil;&atilde;o do cliente): total de <strong>R$ 5.900,00</strong> em tr&ecirc;s meses de veicula&ccedil;&atilde;o, de 15/09 a 14/12/2026. Linha do tempo posicionada na data do relat&oacute;rio (12/10/2026): 28 de 91 dias percorridos, todos dentro do M&ecirc;s 1 (restam 2 dias).</div>
+    <div class="foot-note">Or&ccedil;amento planejado (anota&ccedil;&atilde;o do cliente): total de <strong>R$ 5.900,00</strong> em tr&ecirc;s meses de veicula&ccedil;&atilde;o, de 15/09 a 14/12/2026. Linha do tempo posicionada na data final do relat&oacute;rio (14/10/2026): 30 de 91 dias percorridos &mdash; M&ecirc;s 1 completo (30 dias).</div>
+  </div>
+
+  <div class="panel stage-panel" id="sec-orcado">
+    <div class="panel-head">
+      <h2>2 - Or&ccedil;ado x Planejado</h2>
+      <span class="note">investimento realizado &middot; 15/09 &mdash; 14/10</span>
+    </div>
+    <div class="stage-card-row" id="budgetCards" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));"></div>
+    <div style="margin:22px 0 6px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+        <span style="font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.06em;">Investimento realizado x or&ccedil;amento planejado</span>
+        <span id="budgetSummary" style="font-family:var(--mono);font-size:12px;color:var(--ink);"></span>
+      </div>
+      <div style="position:relative;height:18px;background:#262a33;border:1px solid #5a6070;border-radius:9px;overflow:hidden;box-sizing:border-box;">
+        <div id="budgetFill" style="position:absolute;left:0;top:0;bottom:0;background:var(--accent);"></div>
+        <div id="budgetDiv1" style="position:absolute;top:0;bottom:0;width:1px;background:#5a6070;"></div>
+        <div id="budgetDiv2" style="position:absolute;top:0;bottom:0;width:1px;background:#5a6070;"></div>
+      </div>
+      <div id="budgetTicks" style="position:relative;height:22px;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);"></div>
+      <div id="budgetMonths" style="display:flex;margin-top:2px;font-size:10.5px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.05em;"></div>
+    </div>
+    <div class="foot-note" id="budgetFoot"></div>
+  </div>
+
+  <div class="panel-head" id="sec-metricas" style="margin-bottom:12px;"><h2>3 - Quadro geral de m&eacute;tricas</h2></div>
+  <div class="kpi-grid" id="kpiGrid"></div>
+  <div class="foot-note" style="margin:-8px 0 24px;">
+    <strong>Alcance e Frequ&ecirc;ncia</strong> do per&iacute;odo = valores reais do Gerenciador: <strong>554.688 / 1,65</strong>. Mensal: Set <strong>209.474 / 1,38</strong> &middot; Out <strong>418.510 / 1,49</strong> (frequ&ecirc;ncia = impress&otilde;es &divide; alcance). Alcance n&atilde;o &eacute; som&aacute;vel: a soma dos meses (627.984) fica acima do total do per&iacute;odo (554.688, deduplicado).
+    "Visualiza&ccedil;&otilde;es" = <code>media_views</code> (vezes que o an&uacute;ncio foi reproduzido ou exibido). "Engajamento" = <code>post_engagement</code> (todas as a&ccedil;&otilde;es nos an&uacute;ncios).
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>4 - Investimento vs Visualiza&ccedil;&otilde;es - por dia</h2>
+      <span class="note">di&aacute;rio</span>
+    </div>
+    <canvas id="trendChart" height="90"></canvas>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>5 - Impress&otilde;es e Cliques no link - por dia</h2>
+      <span class="note">di&aacute;rio</span>
+    </div>
+    <canvas id="dailyChart" height="90"></canvas>
+  </div>
+
+  <div class="section-head" id="sec-tipos"><h2>Tipo de campanhas</h2></div>
+
+  <div class="grid-2">
+    <div class="panel" style="margin-bottom:0;">
+      <div class="panel-head">
+        <h2>6 - Investimento por tipo de campanha</h2>
+        <span class="note">R$</span>
+      </div>
+      <canvas id="typeChart" height="220"></canvas>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;height:100%;">
+      <div class="panel" style="padding:14px 16px;margin-bottom:0;flex-shrink:0;">
+        <div class="panel-head" style="margin-bottom:10px;">
+          <h2 style="font-size:12px;">7 - Ranking por tipo &mdash; Visualiza&ccedil;&otilde;es</h2>
+          <span class="note" style="font-size:10px;">result. &middot; custo</span>
+        </div>
+        <div style="overflow-x:auto;">
+        <table id="typeTable" style="font-size:11px;table-layout:fixed;width:100%;">
+          <colgroup><col style="width:30%"><col style="width:18%"><col style="width:20%"><col style="width:14%"><col style="width:18%"></colgroup>
+          <thead><tr><th>Tipo</th><th>Gasto</th><th>Visualiz.</th><th>Engaj.</th><th>R$/mil</th></tr></thead>
+          <tbody></tbody>
+          <tfoot id="typeTableFoot"></tfoot>
+        </table>
+        </div>
+      </div>
+      <div class="panel" style="padding:14px 16px;margin-bottom:0;flex:1;display:flex;flex-direction:column;min-height:0;">
+        <div class="panel-head" style="margin-bottom:10px;flex-shrink:0;">
+          <h2 style="font-size:12px;">8 - Cliques no link x Visualiza&ccedil;&atilde;o de p&aacute;gina</h2>
+          <span class="note" style="font-size:10px;">di&aacute;rio</span>
+        </div>
+        <div style="flex:1;min-height:200px;position:relative;"><canvas id="contentViewsChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel" style="display:flex;flex-direction:column;">
+      <div class="panel-head" style="flex-shrink:0;">
+        <h2>9 - Investimento por tipo de campanha (funil)</h2>
+        <span class="note">R$ &middot; topo &rarr; meio</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div id="funnelChart"></div>
+        <div id="funnelLegend" style="margin-top:26px;"></div>
+      </div>
+    </div>
+    <div class="panel" style="display:flex;flex-direction:column;">
+      <div class="panel-head" style="flex-shrink:0;">
+        <h2>10 - Valor gasto x tipo</h2>
+        <span class="note">% do investimento</span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:10px 0;">
+        <div style="width:72%;max-width:348px;aspect-ratio:1/1;"><canvas id="typeDonutChart"></canvas></div>
+        <div id="typeDonutLegend" style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>11 - Tipo de Campanha por M&ecirc;s</h2>
+      <span class="note">% do investimento &middot; por m&ecirc;s</span>
+    </div>
+    <div id="monthTypeGrid" style="grid-template-columns:repeat(2,1fr);"></div>
   </div>
 
   <div class="panel stage-panel">
+    <div class="panel-head"><h2>12 - Reconhecimento &middot; Instagram [Topo de Funil]</h2></div>
+    <div class="stage-card-row" id="stageCards0"></div>
+    <div class="foot-note" id="stageFoot0"></div>
+  </div>
+
+  <div class="panel stage-panel">
+    <div class="panel-head"><h2>13 - Reconhecimento &middot; Facebook [Topo de Funil]</h2></div>
+    <div class="stage-card-row" id="stageCards1"></div>
+    <div class="foot-note" id="stageFoot1"></div>
+  </div>
+
+  <div class="panel stage-panel">
+    <div class="panel-head"><h2>14 - Tr&aacute;fego &middot; Perfil Instagram [Meio de Funil]</h2></div>
+    <div class="stage-card-row" id="stageCards2"></div>
+    <div class="foot-note" id="stageFoot2"></div>
+  </div>
+
+  <div class="panel">
     <div class="panel-head">
-      <h2>16 - Estrutura de campanhas e conjuntos de an&uacute;ncio</h2>
+      <h2>15 - Detalhamento mensal por m&eacute;trica</h2>
+      <span class="note">12 m&eacute;tricas</span>
+    </div>
+    <div id="metricDetailContainer"></div>
+    <div class="foot-note">S&eacute;rie mensal: Set/26 = 15&ndash;30/09 (campanhas 01 e 03) &middot; Out/26 = 01&ndash;14/10 (as 3 campanhas; a 02 de Facebook entrou em 05/10). Alcance e Frequ&ecirc;ncia mensais = <strong>valores reais do Gerenciador</strong> (Set 209.474 / 1,38 &middot; Out 418.510 / 1,49). Alcance n&atilde;o &eacute; som&aacute;vel: a soma dos meses (627.984) fica acima do total do per&iacute;odo (554.688, deduplicado).</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>16 - Notas metodol&oacute;gicas &amp; defini&ccedil;&otilde;es</h2>
+      <span class="note">como ler os n&uacute;meros</span>
+    </div>
+    <table class="notes-table">
+      <tr>
+        <td class="nkey">Fonte dos dados</td>
+        <td class="nval">Conector <strong>Meta Ads (MCP)</strong>, dados ao vivo da conta <strong>Grupo RBS (Comunica&ccedil;&atilde;o)</strong> (604645906372904). Recorte: 3 campanhas do perfil <strong>Grupo RBS Neg&oacute;cios</strong>. Per&iacute;odo <strong>15 set &ndash; 14 out 2026</strong>. Janela de atribui&ccedil;&atilde;o padr&atilde;o: <strong>7 dias clique / 1 dia visualiza&ccedil;&atilde;o</strong>.</td>
+      </tr>
+      <tr>
+        <td class="nkey">Objetivos do perfil</td>
+        <td class="nval">Instagram: <strong>seguidores e visualiza&ccedil;&otilde;es</strong>. Facebook: <strong>visualiza&ccedil;&otilde;es e engajamento</strong>. O briefing prev&ecirc; veicula&ccedil;&atilde;o de 15/09 a 14/12; este relat&oacute;rio cobre at&eacute; 14/10.</td>
+      </tr>
+      <tr>
+        <td class="nkey">Alcance e Frequ&ecirc;ncia</td>
+        <td class="nval">Nas campanhas (blocos 12, 13 e 14) o alcance &eacute; o <strong>valor real da campanha</strong>. No per&iacute;odo: Alcance <strong>554.688</strong>, Frequ&ecirc;ncia <strong>1,65</strong> (valores reais do Gerenciador, todas as campanhas juntas). Mensal: Set <strong>209.474</strong> / 1,38 &middot; Out <strong>418.510</strong> / 1,49. <strong>N&atilde;o s&atilde;o som&aacute;veis</strong> &mdash; a soma dos meses (627.984) fica acima do total do per&iacute;odo (554.688) porque a mesma pessoa &eacute; contada em mais de um m&ecirc;s. Set/26 &eacute; m&ecirc;s fechado e n&atilde;o &eacute; recalculado.</td>
+      </tr>
+      <tr>
+        <td class="nkey">Tipos de campanha</td>
+        <td class="nval"><code>[IG] [Reconhecimento]</code> e <code>[FB] [Reconhecimento]</code> &rarr; Reconhecimento (Topo, objetivo OUTCOME_AWARENESS, otimizada por alcance) &middot; <code>[Tr&aacute;fego] Perfil</code> &rarr; Tr&aacute;fego (Meio, objetivo OUTCOME_TRAFFIC, resultado = visualiza&ccedil;&atilde;o de p&aacute;gina de destino). A soma dos 3 tipos = investimento total do recorte (R$ 1.609,31). Impress&otilde;es, cliques, v&iacute;deo e visualiza&ccedil;&otilde;es batem entre a soma por tipo/m&ecirc;s/dia e o total.</td>
+      </tr>
+      <tr>
+        <td class="nkey">CTR (cliques no link)</td>
+        <td class="nval">Cliques no link &divide; impress&otilde;es. Total <strong>0,35%</strong> (Reconhecimento IG 0,16% &middot; Reconhecimento FB 0,01% &middot; Tr&aacute;fego 2,63%). O CTR "todos os cliques" do Gerenciador &eacute; maior (Tr&aacute;fego 2,73%).</td>
+      </tr>
+      <tr>
+        <td class="nkey">Campanha 02 [FB]</td>
+        <td class="nval">Come&ccedil;ou em 05/10/2026 e est&aacute; <strong>ativa</strong>; no per&iacute;odo entregou de 06 a 14/10.</td>
+      </tr>
+      <tr class="hl">
+        <td class="nkey">Fora do recorte</td>
+        <td class="nval">A campanha <code>editais | 2026</code> (R$ 63,52 no per&iacute;odo) pertence &agrave; mesma conta, mas n&atilde;o ao perfil Grupo RBS Neg&oacute;cios. Tamb&eacute;m n&atilde;o entra a campanha <code>Grupo RBS Neg&oacute;cios | Lead</code> (sem gasto no per&iacute;odo).</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="panel stage-panel" id="sec-estrutura">
+    <div class="panel-head">
+      <h2>17 - Estrutura de campanhas e conjuntos de an&uacute;ncio</h2>
       <span class="note">p&uacute;blicos &middot; briefing</span>
     </div>
     <div class="label" style="font-size:10.5px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Campanhas de Reconhecimento/Alcance (Objetivo Alcance)</div>
@@ -356,7 +398,7 @@
     <div class="foot-note">Estrutura conforme o briefing do cliente. Nas campanhas 01 e 02 os tr&ecirc;s conjuntos s&atilde;o p&uacute;blicos frios (Aberto, Interesses e Lookalike 1% de engajados IG e FB em 90 dias), com destino ao link do perfil; na 03, o conjunto reune p&uacute;blico morno (engajados IG 90d) e frio (Lookalike 1%) com Advantage+. Todos com faixa et&aacute;ria e geografia [RS]. Na campanha 02 o r&oacute;tulo dos conjuntos &eacute; <code>[FB]</code>.</div>
   </div>
 
-  <footer>Gerado ao vivo pelo conector Meta Ads (MCP) &mdash; conta Grupo RBS (Comunica&ccedil;&atilde;o) (604645906372904) &middot; Grupo RBS Neg&oacute;cios &middot; 15 set &mdash; 12 out 2026</footer>
+  <footer>Gerado ao vivo pelo conector Meta Ads (MCP) &mdash; conta Grupo RBS (Comunica&ccedil;&atilde;o) (604645906372904) &middot; Grupo RBS Neg&oacute;cios &middot; 15 set &mdash; 14 out 2026</footer>
 </div>
 
 <script>
@@ -389,20 +431,22 @@ const RAW = [
 ["2026-10-09","r",23.8,17885,16892,15,17797,0,383,0],["2026-10-09","t",24.6,2262,2038,83,2267,0,644,72],["2026-10-09","f",31.43,25726,24516,4,24594,0,4059,0],
 ["2026-10-10","r",25.93,18606,18193,9,18540,0,408,0],["2026-10-10","t",23.41,2090,1998,80,2083,0,575,69],["2026-10-10","f",31.44,25236,24364,6,24185,0,3763,0],
 ["2026-10-11","r",31.7,24404,23379,23,24274,0,568,0],["2026-10-11","t",28.11,2853,2655,106,2842,0,789,81],["2026-10-11","f",43.08,36181,34447,1,34702,0,5005,0],
-["2026-10-12","r",25.82,22494,21220,21,22337,0,663,0],["2026-10-12","t",27.03,4106,3640,139,3997,1,1335,112],["2026-10-12","f",34.62,32638,29640,0,31519,0,4683,0]
+["2026-10-12","r",25.82,22494,21220,21,22337,0,663,0],["2026-10-12","t",27.03,4106,3640,139,3997,1,1335,112],["2026-10-12","f",34.62,32638,29640,0,31519,0,4683,0],
+["2026-10-13","r",15.48,13533,13287,7,13422,0,633,0],["2026-10-13","t",7.74,1564,1522,33,1482,0,548,27],["2026-10-13","f",7.71,7710,7693,0,7149,0,964,0],
+["2026-10-14","r",28.26,23930,22937,8,24280,0,998,0],["2026-10-14","t",30.79,5282,4855,196,5115,1,2180,148],["2026-10-14","f",26.04,23495,20957,2,21945,0,3140,0]
 ];
 const F = {date:0,camp:1,spend:2,imp:3,reach:4,link:5,views:6,follow:7,eng:8,lpv:9};
 
 // totais por campanha (per&iacute;odo completo, API) e v&iacute;deo mensal (API)
 const CAMP = {
-  r:{key:'r',label:'Reconhecimento · Instagram',short:'Reconhecimento IG',stage:'Topo de Funil',color:'#ff7a3d',reach:365598,freq:1.55514,thruplay:1490,p75:1813,p100:1300,videoPlays:267146,
-     vid:{set:{plays:116364,thru:732,p75:996,p100:733},out:{plays:150782,thru:758,p75:817,p100:567}}},
-  f:{key:'f',label:'Reconhecimento · Facebook',short:'Reconhecimento FB',stage:'Topo de Funil',color:'#8b5cf6',reach:133018,freq:1.456758,thruplay:4372,p75:1017,p100:819,videoPlays:180691,
-     vid:{set:{plays:0,thru:0,p75:0,p100:0},out:{plays:180691,thru:4372,p75:1017,p100:819}}},
-  t:{key:'t',label:'Tráfego · Perfil Instagram',short:'Tráfego Perfil IG',stage:'Meio de Funil',color:'#22d3ee',reach:43516,freq:1.748483,thruplay:2819,p75:3160,p100:2200,videoPlays:54945,
-     vid:{set:{plays:34725,thru:1997,p75:2793,p100:1980},out:{plays:20220,thru:822,p75:367,p100:220}}}
+  r:{key:'r',label:'Reconhecimento · Instagram',short:'Reconhecimento IG',stage:'Topo de Funil',color:'#ff7a3d',reach:386989,freq:1.565985,thruplay:1641,p75:1840,p100:1314,videoPlays:302912,
+     vid:{set:{plays:116364,thru:732,p75:996,p100:733},out:{plays:186548,thru:909,p75:844,p100:581}}},
+  f:{key:'f',label:'Reconhecimento · Facebook',short:'Reconhecimento FB',stage:'Topo de Funil',color:'#8b5cf6',reach:145501,freq:1.546244,thruplay:4989,p75:1170,p100:942,videoPlays:209021,
+     vid:{set:{plays:0,thru:0,p75:0,p100:0},out:{plays:209021,thru:4989,p75:1170,p100:942}}},
+  t:{key:'t',label:'Tráfego · Perfil Instagram',short:'Tráfego Perfil IG',stage:'Meio de Funil',color:'#22d3ee',reach:47815,freq:1.734456,thruplay:3343,p75:3408,p100:2351,videoPlays:60465,
+     vid:{set:{plays:34725,thru:1997,p75:2793,p100:1980},out:{plays:25740,thru:1346,p75:615,p100:371}}}
 };
-const REAL_MONTH = {set:{reach:209474,freq:1.38}, out:{reach:380801,freq:1.44}}; // valores reais do Gerenciador (todas as campanhas)
+const REAL_MONTH = {set:{reach:209474,freq:1.38}, out:{reach:418510,freq:null}}; // valores reais do Gerenciador (todas as campanhas); freq. de Out = impressões ÷ alcance
 
 function agg(rows){
   const o={spend:0,imp:0,link:0,views:0,follow:0,eng:0,lpv:0};
@@ -422,20 +466,19 @@ const M = monthRows.map((rows,i)=>{
   const a=agg(rows); const mk=mkeys[i];
   const reach = REAL_MONTH[mk].reach;
   const v = ['r','f','t'].reduce((s,k)=>{const x=CAMP[k].vid[mk];return {plays:s.plays+x.plays,thru:s.thru+x.thru,p75:s.p75+x.p75,p100:s.p100+x.p100};},{plays:0,thru:0,p75:0,p100:0});
-  return Object.assign({}, a, {reach:reach, freq:REAL_MONTH[mk].freq, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:v.thru, plays:v.plays, p75:v.p75});
+  return Object.assign({}, a, {reach:reach, freq:REAL_MONTH[mk].freq||a.imp/reach, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:v.thru, plays:v.plays, p75:v.p75});
 });
-const REAL_REACH = 522390, REAL_FREQ = 1.60;
 const t = (()=>{
   const a=agg(RAW); const reach=types.reduce((s,x)=>s+x.reach,0);
   const thru=types.reduce((s,x)=>s+x.thruplay,0);
-  return Object.assign({}, a, {reach:REAL_REACH, freq:REAL_FREQ, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:thru, plays:types.reduce((s,x)=>s+x.videoPlays,0), p75:types.reduce((s,x)=>s+x.p75,0)});
+  return Object.assign({}, a, {reach:554688, freq:1.65, ctr:a.link/a.imp*100, cpm:a.spend/a.imp*1000, thru:thru, plays:types.reduce((s,x)=>s+x.videoPlays,0), p75:types.reduce((s,x)=>s+x.p75,0)});
 })();
 
 // dias (preenche datas sem entrega com 0)
 const dayMap = {};
 RAW.forEach(r=>{const d=dayMap[r[F.date]]||(dayMap[r[F.date]]={imp:0,link:0,lpv:0,spend:0,views:0});d.imp+=r[F.imp];d.link+=r[F.link];d.lpv+=r[F.lpv];d.spend+=r[F.spend];d.views+=r[F.views];});
 const daily = [];
-for(let d=new Date('2026-09-15T12:00:00Z'); d<=new Date('2026-10-12T12:00:00Z'); d.setUTCDate(d.getUTCDate()+1)){
+for(let d=new Date('2026-09-15T12:00:00Z'); d<=new Date('2026-10-14T12:00:00Z'); d.setUTCDate(d.getUTCDate()+1)){
   const k=d.toISOString().slice(0,10); const v=dayMap[k]||{imp:0,link:0,lpv:0,spend:0,views:0};
   daily.push({Day:k, Impressions:v.imp, LinkClicks:v.link, LPV:v.lpv, Spend:Math.round(v.spend*100)/100, Views:v.views});
 }
@@ -701,13 +744,40 @@ stageCards.forEach((cards,i)=>{
 const fq = v => v.toFixed(2).replace('.',',');
 document.getElementById('stageFoot0').innerHTML =
   'Frequência ' + fq(r_.freq) + ' · ThruPlays ' + fmtNum(r_.thruplay) + ' · Vídeo 75% ' + fmtNum(r_.p75) + ' · Vídeo 100% ' + fmtNum(r_.p100) + ' · Cliques no link ' + fmtNum(r_.link) +
-  '. Campanha <code>01 | [IG] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento, otimizada por alcance; ativa). Alcance = valor real da campanha. Resultado do Gerenciador: 365.598 pessoas alcançadas a R$ 2,00 cada mil.';
+  '. Campanha <code>01 | [IG] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento, otimizada por alcance; ativa). Alcance = valor real da campanha. Resultado do Gerenciador: 386.989 pessoas alcançadas a R$ 2,00 cada mil.';
 document.getElementById('stageFoot1').innerHTML =
   'Frequência ' + fq(f_.freq) + ' · ThruPlays ' + fmtNum(f_.thruplay) + ' · Vídeo 75% ' + fmtNum(f_.p75) + ' · Vídeo 100% ' + fmtNum(f_.p100) + ' · Cliques no link ' + fmtNum(f_.link) +
-  '. Campanha <code>02 | [FB] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento; começou em 05/10/2026, entregou de 06 a 12/10; ativa). Alcance = valor real da campanha. Objetivo do Facebook: visualizações e engajamento.';
+  '. Campanha <code>02 | [FB] [Reconhecimento] Grupo_RBS_Negócios</code> (objetivo Reconhecimento; começou em 05/10/2026, entregou de 06 a 14/10; ativa). Alcance = valor real da campanha. Objetivo do Facebook: visualizações e engajamento.';
 document.getElementById('stageFoot2').innerHTML =
   'Frequência ' + fq(t_.freq) + ' · Alcance ' + fmtNum(t_.reach) + ' · ThruPlays ' + fmtNum(t_.thruplay) + ' · Vídeo 75% ' + fmtNum(t_.p75) +
   '. Campanha <code>03 | [Tráfego] Perfil GrupoRBS_Negócios</code> (objetivo Tráfego, destino perfil do Instagram, público morno + frio; começou em 16/09/2026; ativa). Resultado = visualização de página de destino. CTR = cliques no link ÷ impressões.';
+
+// ---- 2 - orçado x planejado ----
+(function(){
+  const budget = [1900,2100,1900], total = budget.reduce((a,b)=>a+b,0);
+  const real = t.spend, pctTotal = real/total*100, pctM1 = real/budget[0]*100;
+  const pf = v => v.toFixed(1).replace('.',',')+'%';
+  const cards = [
+    {label:'Planejado (3 meses)', value:fmtMoney2(total)},
+    {label:'Realizado · 15/09 – 14/10', value:fmtMoney2(real)},
+    {label:'Realizado ÷ planejado total', value:pf(pctTotal)},
+    {label:'Mês 1 · realizado ÷ planejado', value:pf(pctM1)}
+  ];
+  document.getElementById('budgetCards').innerHTML = cards.map((c,j)=>`
+    <div class="stage-card"><div class="label">${c.label}</div><div class="value ${j<2?'accent':''}"><span class="scard-num">${c.value}</span>${c.note?`<span class="scard-note">${c.note}</span>`:''}</div></div>`).join('');
+  document.getElementById('budgetSummary').innerHTML = '<strong style="color:var(--accent);">'+fmtMoney2(real)+'</strong> realizados &middot; '+fmtMoney2(total-real)+' a investir &middot; '+pf(pctTotal);
+  const seg = budget.map(b=>b/total*100);
+  const b1 = seg[0], b2 = seg[0]+seg[1];
+  document.getElementById('budgetFill').style.width = pctTotal+'%';
+  document.getElementById('budgetDiv1').style.left = b1+'%';
+  document.getElementById('budgetDiv2').style.left = b2+'%';
+  document.getElementById('budgetTicks').innerHTML =
+    '<span style="position:absolute;left:0;">R$ 0</span>'+
+    '<span style="position:absolute;left:'+pctTotal+'%;transform:translateX(-50%);color:var(--accent);">'+fmtMoney2(real)+'</span>'+
+    '<span style="position:absolute;right:0;">'+fmtMoney(total)+'</span>';
+  document.getElementById('budgetMonths').innerHTML = budget.map((b,i)=>'<div style="width:'+seg[i]+'%;text-align:'+(['left','center','right'][i])+';">Mês '+(i+1)+' · '+fmtMoney(b)+'</div>').join('');
+  document.getElementById('budgetFoot').innerHTML = 'Orçamento planejado: Mês 1 (15/09–14/10) '+fmtMoney2(budget[0])+' · Mês 2 (15/10–14/11) '+fmtMoney2(budget[1])+' · Mês 3 (15/11–14/12) '+fmtMoney2(budget[2])+'. Realizado = investimento das 3 campanhas no período do relatório, que coincide com o Mês 1 completo: '+pf(pctM1)+' do orçamento do mês ('+fmtMoney2(budget[0]-real)+' abaixo do planejado; média de '+fmtMoney2(real/30)+'/dia contra R$ 63/dia previstos). A barra tem os meses na proporção do orçamento de cada um.';
+})();
 </script>
 </body>
 </html>
